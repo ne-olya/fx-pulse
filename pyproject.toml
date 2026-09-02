@@ -1,0 +1,6 @@
+[project]
+name = "fx-pulse"
+version = "0.1.0"
+description = "Signals for favorable cross-border transfer moments"
+requires-python = ">=3.12"
+dependencies = []
