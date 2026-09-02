@@ -201,15 +201,15 @@
 
 ## Материалы и данные
 
-- Официальные курсы ЦБ РФ
-- История курсов ЦБ РФ
-- Национальный банк Таджикистана
-- Центральный банк Узбекистана
-- Национальный банк Кыргызской Республики
-- Центральный банк Армении
-- Национальный банк Казахстана
-- Московская биржа
-- Мобильное приложение Альфа-Банка
+- [Официальные курсы ЦБ РФ](https://www.cbr.ru/development/SXML/)
+- [История курсов ЦБ РФ](https://www.cbr.ru/currency_base/dynamics/)
+- [Национальный банк Таджикистана](https://www.nbt.tj/tj/)
+- [Центральный банк Узбекистана](https://cbu.uz/ru/arkhiv-kursov-valyut/)
+- [Национальный банк Кыргызской Республики](https://www.nbkr.kg/index.jsp?lang=RUS)
+- [Центральный банк Армении](https://old.cba.am/am/SitePages/Default.aspx)
+- [Национальный банк Казахстана](https://nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut)
+- [Московская биржа](https://www.moex.com/)
+- [Мобильное приложение Альфа-Банка](https://alfabank.ru/apps/amobile/)
 
 ## Контактное лицо
 
