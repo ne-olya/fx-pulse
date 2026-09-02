@@ -6,3 +6,7 @@ __pycache__/
 .env
 data/
 artifacts/
+
+# локальные материалы, не для публикации
+*.pdf
+AI_Product_Discovery.json
