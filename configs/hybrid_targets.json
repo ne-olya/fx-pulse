@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "description": "Preregistered hybrid targets: a strict short-horizon condition protects the immediate decision, while a long-horizon regret condition rejects economically material delayed improvements. Each target is evaluated separately; no target is selected by OOT lift.",
+  "evaluation": {
+    "target_instrument_id": "fx_cny_rub_tom",
+    "horizons": [1, 3, 5, 10, 20],
+    "candidate_policy": "all_observable_days",
+    "tolerance_bps": 0.0,
+    "min_training_observations": 252,
+    "inner_selection_observations": 252,
+    "minimum_candidate_training_observations": 20,
+    "factor_lag_observations": 1,
+    "target_return_windows": [1, 3, 5, 20],
+    "factor_return_windows": [1, 3, 5],
+    "volatility_windows": [5, 20],
+    "distance_to_min_windows": [5, 20, 60],
+    "past_min_windows": [1, 5, 20],
+    "models": ["xgboost", "gradient_boosting"],
+    "ridge_l2": 1.0,
+    "max_iterations": 100,
+    "boosted_stumps": {"iterations": 12, "learning_rate": 0.1, "min_leaf": 10, "quantiles": [0.2, 0.4, 0.6, 0.8]},
+    "xgboost": {"n_estimators": 80, "max_depth": 2, "learning_rate": 0.05, "min_child_weight": 10, "subsample": 0.8, "colsample_bytree": 0.8, "reg_lambda": 5.0},
+    "sklearn": {
+      "random_forest": {"n_estimators": 40, "max_depth": 3, "min_samples_leaf": 10, "max_features": 0.7},
+      "extra_trees": {"n_estimators": 40, "max_depth": 3, "min_samples_leaf": 10, "max_features": 0.7},
+      "adaboost": {"n_estimators": 30, "learning_rate": 0.05, "min_samples_leaf": 10},
+      "gradient_boosting": {"n_estimators": 40, "learning_rate": 0.05, "max_depth": 2, "min_samples_leaf": 10, "subsample": 0.8},
+      "svc_rbf": {"C": 0.5, "gamma": "scale"}
+    },
+    "score_quantiles": [0.8],
+    "minimum_selection_signals": 3,
+    "minimum_signals_per_week": 0.5,
+    "maximum_signals_per_week": 2.0,
+    "selection_minimum_lift": 1.0,
+    "promotion_minimum_lift": 1.3,
+    "minimum_selection_benefit_bps": 0.0,
+    "no_signal_fallback": "do_not_send",
+    "calibration_oof_blocks": 3,
+    "calibration_minimum_observations": 60,
+    "hybrid_targets": [
+      {"name": "strict_h1_and_regret_h10_tau25", "short_horizon": 1, "long_horizon": 10, "long_tolerance_bps": 25.0},
+      {"name": "strict_h3_and_regret_h10_tau25", "short_horizon": 3, "long_horizon": 10, "long_tolerance_bps": 25.0},
+      {"name": "strict_h3_and_regret_h20_tau25", "short_horizon": 3, "long_horizon": 20, "long_tolerance_bps": 25.0},
+      {"name": "strict_h3_and_regret_h20_tau50", "short_horizon": 3, "long_horizon": 20, "long_tolerance_bps": 50.0}
+    ],
+    "policy_score_quantile": 0.8
+  }
+}

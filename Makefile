@@ -14,7 +14,7 @@ UNIVERSE_FROM ?= 2021-09-03
 UNIVERSE_TO ?= $(DATA_TO)
 SECIDS ?= CNYRUB_TOM USD000UTSTOM KZTRUB_TOM
 
-.PHONY: setup data data-quality test backtest hypotheses hypotheses-data universe-data universe-data-all rule-selection interpretable-models local-minimum-models
+.PHONY: setup data data-quality test backtest hypotheses hypotheses-data universe-data universe-data-all rule-selection interpretable-models local-minimum-models regret-benchmark boosting-calibration hybrid-targets dual-regret-policy
 
 setup:
 	$(UV) sync --all-groups
@@ -56,3 +56,15 @@ interpretable-models:
 
 local-minimum-models:
 	$(PYTHON) -m fxpulse.local_minimum_models
+
+regret-benchmark:
+	$(PYTHON) -m fxpulse.regret_benchmark
+
+boosting-calibration:
+	$(PYTHON) -m fxpulse.boosting_calibration
+
+hybrid-targets:
+	$(PYTHON) -m fxpulse.hybrid_targets
+
+dual-regret-policy:
+	$(PYTHON) -m fxpulse.dual_regret_policy

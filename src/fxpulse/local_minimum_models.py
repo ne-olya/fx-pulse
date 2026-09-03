@@ -11,6 +11,7 @@ outer expanding fold.
 from __future__ import annotations
 
 import argparse
+import copy
 import datetime as dt
 import hashlib
 import json
@@ -60,6 +61,9 @@ FOLD_COLUMNS = (
     "selection_candidate_baseline_hit_rate",
     "selection_lift",
     "selection_benefit_fwd_bps",
+    "selection_regret_mean_bps",
+    "selection_regret_p90_bps",
+    "selection_baseline_regret_mean_bps",
     "test_candidate_count",
     "test_candidate_signal_count",
     "test_dispatched_signal_count",
@@ -68,6 +72,9 @@ FOLD_COLUMNS = (
     "test_candidate_baseline_hit_rate",
     "test_lift",
     "test_benefit_fwd_bps",
+    "test_regret_mean_bps",
+    "test_regret_p90_bps",
+    "test_baseline_regret_mean_bps",
     "test_frequency_in_policy",
 )
 SIGNAL_COLUMNS = (
@@ -109,6 +116,12 @@ SUMMARY_COLUMNS = (
     "benefit_sym_bps",
     "benefit_fwd_bps",
     "benefit_fwd_newey_west_t",
+    "regret_mean_bps",
+    "regret_median_bps",
+    "regret_p90_bps",
+    "baseline_regret_mean_bps",
+    "baseline_regret_median_bps",
+    "baseline_regret_p90_bps",
     "signals_per_week",
     "signals_per_month",
     "cluster_share",
@@ -145,6 +158,23 @@ class FittedModel:
     model: Any
     train_scores: np.ndarray
     train_positions: np.ndarray
+
+
+def refit_score_quantile_threshold(model: FittedModel, quantile: float) -> float:
+    """Return a rank cutoff in the score space of the final refit model.
+
+    A numeric threshold from an OOF model must not be applied to a model refit
+    on a larger history: their score scales can differ.  ``train_scores`` are
+    deliberately used only as a score-space reference for a rank policy, not
+    as evidence of probability calibration or model quality.
+    """
+
+    if not isinstance(quantile, int | float) or not 0 < float(quantile) < 1:
+        raise ValueError("score quantile must be in (0, 1)")
+    scores = np.asarray(model.train_scores, dtype="float64")
+    if len(scores) == 0 or not np.isfinite(scores).all():
+        raise ValueError("final refit model needs finite train scores for a rank threshold")
+    return float(np.quantile(scores, float(quantile)))
 
 
 def local_minimum_config_sha256(path: Path | str = Path("configs/local_minimum_models.json")) -> str:
@@ -700,10 +730,16 @@ def run_local_minimum_models(
     config_path: Path | str = Path("configs/local_minimum_models.json"),
     artifact_dir: Path | str = Path("artifacts/local_minimum_models"),
     models: tuple[ModelKind, ...] | None = None,
+    tolerance_bps: float | None = None,
 ) -> dict[str, Any]:
     """Select and OOT-test local-minimum models for every configured horizon."""
 
     config = load_local_minimum_config(config_path)
+    if tolerance_bps is not None:
+        if not isinstance(tolerance_bps, int | float) or not math.isfinite(float(tolerance_bps)) or tolerance_bps < 0:
+            raise ValueError("tolerance_bps override must be a finite non-negative number")
+        config = copy.deepcopy(config)
+        config["evaluation"]["tolerance_bps"] = float(tolerance_bps)
     evaluation = config["evaluation"]
     candidate_policy = str(evaluation["candidate_policy"])
     selected_models = tuple(models or tuple(evaluation["models"]))
@@ -775,7 +811,7 @@ def run_local_minimum_models(
                 scores, _ = _predict(fitted, features, selection_candidates)
                 for quantile_raw in evaluation["score_quantiles"]:
                     quantile = float(quantile_raw)
-                    threshold = float(np.quantile(fitted.train_scores, quantile))
+                    threshold = refit_score_quantile_threshold(fitted, quantile)
                     candidates = pd.DataFrame({"position": np.asarray(selection_candidates)[scores >= threshold], "score": scores[scores >= threshold]})
                     candidates["timestamp"] = panel.loc[candidates["position"], "known_at"].to_numpy()
                     capped, metrics = _metrics(
@@ -821,7 +857,7 @@ def run_local_minimum_models(
                 evaluation=evaluation,
                 candidate_policy=candidate_policy,
             )
-            threshold = float(np.quantile(final_model.train_scores, float(selected["quantile"])))
+            threshold = refit_score_quantile_threshold(final_model, float(selected["quantile"]))
             test_candidates_base = candidate_positions[(fold.name, horizon, candidate_policy)]
             test_scores, test_matrix = _predict(final_model, features, test_candidates_base)
             test_candidates = pd.DataFrame(
@@ -857,6 +893,9 @@ def run_local_minimum_models(
                     "selection_candidate_baseline_hit_rate": selection_metrics["baseline_hit_rate"],
                     "selection_lift": selection_metrics["lift"],
                     "selection_benefit_fwd_bps": selection_metrics["benefit_fwd_bps"],
+                    "selection_regret_mean_bps": selection_metrics["regret_mean_bps"],
+                    "selection_regret_p90_bps": selection_metrics["regret_p90_bps"],
+                    "selection_baseline_regret_mean_bps": selection_metrics["baseline_regret_mean_bps"],
                     "test_candidate_signal_count": test_metrics["signal_count"],
                     "test_dispatched_signal_count": len(capped_test) if allowed else 0,
                     "test_signals_per_week": test_metrics["signals_per_week"],
@@ -864,6 +903,9 @@ def run_local_minimum_models(
                     "test_candidate_baseline_hit_rate": test_metrics["baseline_hit_rate"],
                     "test_lift": test_metrics["lift"],
                     "test_benefit_fwd_bps": test_metrics["benefit_fwd_bps"],
+                    "test_regret_mean_bps": test_metrics["regret_mean_bps"],
+                    "test_regret_p90_bps": test_metrics["regret_p90_bps"],
+                    "test_baseline_regret_mean_bps": test_metrics["baseline_regret_mean_bps"],
                     "test_frequency_in_policy": frequency_ok,
                 }
             )
@@ -932,6 +974,7 @@ def run_local_minimum_models(
         "snapshot_dir": str(snapshot),
         "config_path": str(config_path),
         "config_sha256": local_minimum_config_sha256(config_path),
+        "tolerance_bps_override": float(tolerance_bps) if tolerance_bps is not None else None,
         "target_instrument_id": target,
         "horizons": evaluation["horizons"],
         "candidate_policy": candidate_policy,
@@ -955,6 +998,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--snapshot", type=Path, help="manifest-gated universe snapshot; widest local snapshot is default")
     parser.add_argument("--config", type=Path, default=Path("configs/local_minimum_models.json"))
     parser.add_argument("--artifact-dir", type=Path, default=Path("artifacts/local_minimum_models"))
+    parser.add_argument("--tolerance-bps", type=float, help="override the preconfigured future-regret budget in basis points")
     parser.add_argument(
         "--models",
         nargs="+",
@@ -976,6 +1020,7 @@ def main(argv: list[str] | None = None) -> None:
         config_path=args.config,
         artifact_dir=args.artifact_dir,
         models=tuple(args.models) if args.models else None,
+        tolerance_bps=args.tolerance_bps,
     )
     print(
         f"Wrote {meta['folds']} fold-horizon decisions and {meta['signals_written']} candidate test signals "

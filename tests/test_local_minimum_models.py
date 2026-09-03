@@ -8,6 +8,7 @@ import pandas as pd
 
 from fxpulse.labeling import label_observations
 from fxpulse.local_minimum_models import _fit_sklearn_model, _score_sklearn_model, local_minimum_features, run_local_minimum_models
+from fxpulse.regret_benchmark import _product_policy_summary
 
 
 def _panel(prices: list[float]) -> pd.DataFrame:
@@ -140,3 +141,79 @@ def test_rbf_svc_uses_margin_without_deprecated_probability_switch() -> None:
 
     assert np.isfinite(scores).all()
     assert ((scores > 0) & (scores < 1)).all()
+
+
+def test_product_summary_pools_per_fold_winners_instead_of_selecting_outer_best_model() -> None:
+    panel = _panel([10.0, 9.0, 10.0, 11.0, 10.0, 9.0, 10.0])
+    labels = label_observations(panel, horizon=1)
+    dates = panel["value_date"].astype(str).tolist()
+    folds = pd.DataFrame(
+        [
+            {
+                "fold": "fold_a",
+                "horizon_observations": 1,
+                "candidate_policy": "all_observable_days",
+                "selection_status": "promoted",
+                "model": "ridge_logistic",
+                "test_start": dates[1],
+                "test_end": dates[2],
+                "test_lift": 1.0,
+                "test_dispatched_signal_count": 1,
+                "test_regret_mean_bps": 0.0,
+                "test_regret_p90_bps": 0.0,
+            },
+            {
+                "fold": "fold_b",
+                "horizon_observations": 1,
+                "candidate_policy": "all_observable_days",
+                "selection_status": "promoted",
+                "model": "xgboost",
+                "test_start": dates[4],
+                "test_end": dates[5],
+                "test_lift": 2.0,
+                "test_dispatched_signal_count": 1,
+                "test_regret_mean_bps": 0.0,
+                "test_regret_p90_bps": 0.0,
+            },
+        ]
+    )
+    signals = pd.DataFrame(
+        [
+            {
+                "fold": "fold_a",
+                "horizon_observations": 1,
+                "candidate_policy": "all_observable_days",
+                "selection_status": "promoted",
+                "communication_allowed": True,
+                "model": "ridge_logistic",
+                "value_date": dates[1],
+            },
+            {
+                "fold": "fold_b",
+                "horizon_observations": 1,
+                "candidate_policy": "all_observable_days",
+                "selection_status": "promoted",
+                "communication_allowed": True,
+                "model": "xgboost",
+                "value_date": dates[5],
+            },
+        ]
+    )
+
+    product, foldwise, bootstrap = _product_policy_summary(
+        panel=panel,
+        labels=labels,
+        folds=folds,
+        signals=signals,
+        tolerance_bps=0.0,
+        horizon=1,
+        candidate_policy="all_observable_days",
+        bootstrap_samples=20,
+    )
+
+    assert int(product.loc[0, "promoted_fold_count"]) == 2
+    assert int(product.loc[0, "signal_count"]) == 2
+    assert int(product.loc[0, "eligible_candidate_count"]) == 4
+    assert float(product.loc[0, "lift"]) == 4 / 3
+    assert int(foldwise.loc[0, "fold_count"]) == 2
+    assert int(bootstrap.loc[0, "usable_samples"]) > 0
