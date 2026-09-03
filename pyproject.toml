@@ -1,6 +1,26 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
 [project]
 name = "fx-pulse"
 version = "0.1.0"
 description = "Signals for favorable cross-border transfer moments"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pandas>=2.2,<3",
+    "scikit-learn>=1.7,<2",
+    "xgboost>=3.0,<4",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3,<9",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fxpulse"]

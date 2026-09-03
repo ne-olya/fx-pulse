@@ -11,6 +11,10 @@
 | [docs/plan.md](docs/plan.md) | План решения: рамка кейса, принятые решения по сигнальной модели, этапы |
 | [docs/prototype-brief.md](docs/prototype-brief.md) | Рабочее задание на первый прототип конвейера: контракты модулей, метрики, порядок работ |
 | [docs/hypothesis-leadlag-findings.md](docs/hypothesis-leadlag-findings.md) | Проверка гипотезы о лид-лаге: механика расчёта курсов ЦБ, отрицательный результат по базовым индикаторам |
+| [docs/hypothesis-results.md](docs/hypothesis-results.md) | Реестр и результаты дополнительных проверок на пятилетнем OOT-периоде |
+| [docs/moex-universe.md](docs/moex-universe.md) | Каркас межрыночного universe MOEX и гейты перед массовым backfill |
+| [docs/rule-selection.md](docs/rule-selection.md) | Nested walk-forward поиск rule-based и интерпретируемых ML-сигналов по межрыночному universe |
+| [docs/local-minimum-models.md](docs/local-minimum-models.md) | Проверка рекомендаций о будущем минимуме CNY/RUB на горизонтах 1/5/20 дней |
 | [docs/benchmark.md](docs/benchmark.md) | Как задачу «сейчас удачный момент» решают в финтехе, travel, e-commerce и энергетике |
 | [docs/qa-kejsodatel.md](docs/qa-kejsodatel.md) | Вопросы кейсодателю и ответы |
 
@@ -31,20 +35,135 @@
 Окружение: Python ≥ 3.12, [uv](https://docs.astral.sh/uv/).
 
 ```bash
-uv sync
+make setup
 ```
 
-Текущее состояние — разведочные скрипты в `scripts/`:
+Первый воспроизводимый слой запускается так:
 
 ```bash
-uv run python scripts/fetch_cbr.py     # выгрузка курсов ЦБ
-uv run python scripts/fetch_hist.py    # выгрузка MOEX ISS
-uv run python scripts/leadlag.py       # проверка лид-лага
-uv run python scripts/signal_test.py   # базовые индикаторы
-uv run python scripts/wf_test.py       # walk-forward прогон
+make data       # ЦБ, дневной MOEX и 10-минутные свечи MOEX
+make data-quality
+make test       # включая 50 срезов против заглядывания вперёд
+make backtest   # signals.csv, metrics.csv и run_meta.json
 ```
 
-Пакет `src/fxpulse/` с воспроизводимым конвейером и целями `make data / make test / make backtest` собирается по [docs/prototype-brief.md](docs/prototype-brief.md).
+`make data` загружает данные в игнорируемую Git папку `data/raw/`. По умолчанию
+дневная история запрашивается с 2018-01-01, а интрадей — с 2026-08-01: MOEX
+хранит конечную интрадей-историю. Интервал можно изменить явно:
+
+```bash
+make data CANDLE_FROM=2026-01-01 DATA_TO=2026-09-02
+```
+
+Панель загружается через `fxpulse.panel.load_panel`. Она физически исключает
+строки с `known_at > as_of`; поддерживаются `CBR:<CCY>`, дневной
+`MOEX:<SECID>` и `MOEX10M:<SECID>`. Это основа теста против заглядывания
+вперёд. `signals_as_of(T, config)` — единственная точка расчёта сигналов; его
+же вызывает walk-forward-раннер.
+
+`make data-quality` формирует [docs/data-quality.md](docs/data-quality.md).
+`make backtest` разворачивает все 37 комбинаций из
+[configs/grid.json](configs/grid.json), считает их на одном фиксинге ЦБ
+(`CBR:TJS`) и одном закрытии MOEX (`MOEX:CNYRUB_TOM`) и пишет игнорируемые Git
+артефакты в `artifacts/`:
+
+- `signals.csv` — срабатывания в контрактной схеме;
+- `metrics.csv` — разрезы «конфигурация × ряд × горизонт × квартал OOT»;
+- `run_meta.json` — SHA-256 сетки, диапазоны данных и параметры прогона.
+
+Это намеренно узкий базовый прогон: все пять коридоров ЦБ и остальные инструменты
+MOEX уже поддержаны в панели. Их можно добавить в проверочный запуск без смены
+логики, например:
+
+```bash
+./.venv/bin/uv run python -m fxpulse.backtest \
+  --series 'RUB->TJS=CBR:TJS' \
+  --series 'RUB->UZS=CBR:UZS' \
+  --series 'RUB->CNY=MOEX:CNYRUB_TOM'
+```
+
+Для каждого квартального out-of-time блока метки, пересекающие его начало,
+вычищаются на `h` наблюдений; такой же буфер после блока фиксируется как embargo.
+Порогов, обучаемых на итоговой метрике, в прототипе нет — сетка зарегистрирована
+до прогона.
+
+## Межрыночный universe
+
+Стартовый реестр валют, металлов, индексов, акций и planned фьючерсов лежит в
+[configs/moex_universe.json](configs/moex_universe.json). Загрузчик создаёт
+неизменяемый снапшот в `data/raw/moex_universe/`: им можно пользоваться только
+после появления `manifest.json`, поэтому частично скачанные данные не будут
+приняты за готовые. Для пятилетнего audit/backfill фиксированных инструментов
+и кандидатов:
+
+```bash
+make universe-data UNIVERSE_FROM=2021-09-03 UNIVERSE_TO=2026-09-02
+```
+
+Для него же вместе с непрерывными Brent и Gold:
+
+```bash
+make universe-data-all UNIVERSE_FROM=2021-09-03 UNIVERSE_TO=2026-09-02
+```
+
+Второй вариант существенно медленнее: для каждого буднего дня он выбирает
+контракт по ликвидности, доступной именно в тот день, и фиксирует roll без
+заглядывания вперёд. Получить статус `ready` для использования в модели можно
+только после проверки истории, единицы котировки, ликвидности и `known_at`.
+Контракт и следующий порядок работы описаны в
+[docs/moex-universe.md](docs/moex-universe.md).
+
+## Поиск межрыночных сигналов
+
+После `make universe-data` можно запускать два независимых, интерпретируемых
+поиска на самом длинном manifest-gated снапшоте:
+
+```bash
+make rule-selection       # 240 прозрачных правил «фактор × return × хвост»
+make interpretable-models # две ridge-logistic scorecard-модели с коэффициентами
+make local-minimum-models # сравнение 8 моделей для будущих минимумов 1/5/20 дней
+```
+
+Оба процесса ежеквартально выбирают конфигурацию только на expanding
+horizon-purged train-prefix, проверяют её на следующем квартале и применяют
+хронологический cap не более двух срабатываний в неделю. Частота `[0.5, 2]`
+в неделю — исследовательский гейт текущего поиска; `no_send` сохраняется, если
+ни одно правило не проходит train-проверку. Результаты, коэффициенты scorecard
+и диагностика кучности пишутся в `artifacts/rule_selection/` и
+`artifacts/interpretable_models/`.
+
+`make local-minimum-models` проверяет более прямую продуктовую цель для
+покупателя валюты: окажется ли текущий закрывающий курс не выше любого курса в
+следующих 1, 5 или 20 торговых наблюдениях. Основной сценарий рассматривает
+все доступные дни; факт, что курс уже является минимумом прошлого окна,
+поступает как объяснимый диагностический признак, а не как обязательный фильтр.
+Будущий минимум используется только как ретроспективная метка интересной точки
+для обучения и оценки. Модели и
+порог выбираются на внутреннем хронологическом validation-отрезке, затем
+переобучаются на полном прошлом и проверяются на следующем квартале.
+Артефакты пишутся в `artifacts/local_minimum_models/`; методика — в
+[docs/local-minimum-models.md](docs/local-minimum-models.md).
+
+## Проверка гипотез
+
+Зарегистрированные гипотезы запускаются одной командой после загрузки
+пятилетнего intraday-источника CNY/RUB:
+
+```bash
+make hypotheses-data  # месячные чанки с retry; 2018-09-03 → сегодня
+make hypotheses
+```
+
+Раннер пишет `artifacts/hypotheses/metrics.csv`, включая единый пятилетний и
+годовые out-of-time разрезы, а также SHA-256
+`configs/hypotheses.json` в `run_meta.json`. H1–H3/H6–H10 — фиксированные
+дневные правила; H11/H12 — ежемесячно переобучаемые ridge-logit модели с
+purging; H13–H15 — дневные правила по диапазону и активности торгов. H4
+ежемесячно переобучает фильтр времени сессии на предыдущих 24 месяцах. H5
+намеренно имеет статус `not_testable`, пока не передан разрешённый источник
+исполнимых котировок приложения. Отсутствие такой котировки — результат
+проверки, а не замена её рыночной ценой MOEX. Вердикты и критерии отбора — в
+[docs/hypothesis-results.md](docs/hypothesis-results.md).
 
 ## Ограничения
 

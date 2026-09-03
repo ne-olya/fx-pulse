@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "description": "Nested expanding walk-forward selection of interpretable cross-market rules. Candidate rules are fixed before a run; one rule is selected from training data for each following quarterly test window.",
+  "evaluation": {
+    "target_instrument_id": "fx_cny_rub_tom",
+    "horizon_observations": 5,
+    "min_training_observations": 252,
+    "test_period": "quarter",
+    "factor_lag_observations": 1,
+    "minimum_training_signals": 20,
+    "minimum_signals_per_week": 0.5,
+    "maximum_signals_per_week": 2.0,
+    "selection_minimum_lift": 1.0,
+    "promotion_minimum_lift": 1.3,
+    "minimum_training_benefit_bps": 0.0,
+    "no_signal_fallback": "do_not_send"
+  },
+  "rule_library": {
+    "kind": "lagged_factor_return_quantile",
+    "return_windows": [1, 3, 5],
+    "comparison_lookback_observations": 60,
+    "tail_quantiles": [0.1, 0.2],
+    "tails": ["lower", "upper"],
+    "directions": ["favorable", "window_closing"]
+  }
+}

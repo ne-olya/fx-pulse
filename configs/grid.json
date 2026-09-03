@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "description": "Preregistered prototype indicator grid. Expand only through a reviewed config change.",
+  "indicators": [
+    {
+      "name": "level_percentile",
+      "params": {"window": [30, 60, 90, 180, 252], "pct": [5, 10, 20]},
+      "direction": "favorable",
+      "speed": "slow",
+      "days_to_confirm": null,
+      "scenario": "T1"
+    },
+    {
+      "name": "momentum_streak",
+      "params": {"n": [2, 3, 4, 5]},
+      "direction": "favorable",
+      "speed": "fast",
+      "days_to_confirm": null,
+      "scenario": "T2"
+    },
+    {
+      "name": "filter_rule",
+      "params": {"x": [0.5, 1, 2, 3]},
+      "direction": "favorable",
+      "speed": "fast",
+      "days_to_confirm": null,
+      "scenario": "T2"
+    },
+    {
+      "name": "reversal_from_low",
+      "params": {"lookback": [20, 60, 90], "bounce": [0.5, 1.0, 1.5]},
+      "direction": "window_closing",
+      "speed": "fast",
+      "days_to_confirm": 2,
+      "scenario": "T3"
+    },
+    {
+      "name": "volatility_regime",
+      "params": {"window": [20], "regime": ["low", "mid", "high"]},
+      "direction": "window_closing",
+      "speed": "slow",
+      "days_to_confirm": null,
+      "scenario": "T4"
+    },
+    {
+      "name": "seasonality",
+      "params": {"calendar": ["month", "day_of_month"], "min_observations": [20], "min_signal_to_noise": [0.25]},
+      "direction": null,
+      "speed": "slow",
+      "days_to_confirm": null,
+      "scenario": "T5"
+    }
+  ]
+}

@@ -7,6 +7,11 @@ __pycache__/
 data/
 artifacts/
 
+# `data/` above keeps downloaded market data out of Git.  The Python package
+# named `src/fxpulse/data/` contains downloader source code and must be tracked.
+!src/fxpulse/data/
+!src/fxpulse/data/*.py
+
 # локальные материалы, не для публикации
 *.pdf
 AI_Product_Discovery.json

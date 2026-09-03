@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "description": "Registered batch of model hypotheses for the FX Pulse five-year OOT test. A configuration must be changed and its hash recorded before its first run.",
+  "evaluation": {
+    "test_from": "2021-09-03",
+    "retraining": "monthly_expanding",
+    "target_horizon_observations": 5,
+    "weekly_cap": 1,
+    "selection": "first score at or above the in-sample 90th probability percentile in a calendar week",
+    "minimum_training_observations": 252,
+    "promotion_rule": "For research only: lift >= 1.30, positive forward benefit, at least 0.5 signals/week, and no material collapse in annual OOT slices. No rule is production-ready without executable customer quotes."
+  },
+  "models": [
+    {
+      "id": "H11_logit_favorable",
+      "direction": "favorable",
+      "target": "hit_favorable",
+      "algorithm": "ridge_logistic_regression",
+      "l2": 0.2,
+      "max_iterations": 100,
+      "features": [
+        "return_1_sigma",
+        "return_3_sigma",
+        "return_5_sigma",
+        "distance_ma20_sigma",
+        "distance_low60_sigma",
+        "level_percentile_60",
+        "volatility_ratio_20_252",
+        "weekday_sin",
+        "weekday_cos"
+      ]
+    },
+    {
+      "id": "H12_logit_window_closing",
+      "direction": "window_closing",
+      "target": "hit_closing",
+      "algorithm": "ridge_logistic_regression",
+      "l2": 0.2,
+      "max_iterations": 100,
+      "features": [
+        "return_1_sigma",
+        "return_3_sigma",
+        "return_5_sigma",
+        "distance_ma20_sigma",
+        "distance_low60_sigma",
+        "level_percentile_60",
+        "volatility_ratio_20_252",
+        "weekday_sin",
+        "weekday_cos"
+      ]
+    }
+  ],
+  "daily_rules": [
+    {
+      "id": "H13_high_activity_downside_reversal",
+      "kind": "high_activity_downside_reversal",
+      "direction": "favorable",
+      "params": {
+        "return_sigma_max": -1.0,
+        "activity_percentile": 0.8,
+        "close_location_min": 0.75
+      }
+    },
+    {
+      "id": "H14_high_activity_low_rebound",
+      "kind": "high_activity_low_rebound",
+      "direction": "window_closing",
+      "params": {
+        "lookback": 20,
+        "rebound_sigma_min": 0.5,
+        "activity_percentile": 0.8
+      }
+    },
+    {
+      "id": "H15_three_day_selloff_recovery",
+      "kind": "three_day_selloff_recovery",
+      "direction": "window_closing",
+      "params": {
+        "drawdown_sigma_max": -1.5,
+        "activity_percentile": 0.7,
+        "close_location_min": 0.67
+      }
+    }
+  ]
+}
