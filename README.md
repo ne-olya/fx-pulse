@@ -10,6 +10,7 @@
 |---|---|
 | [docs/plan.md](docs/plan.md) | План решения: рамка кейса, принятые решения по сигнальной модели, этапы |
 | [docs/prototype-brief.md](docs/prototype-brief.md) | Рабочее задание на первый прототип конвейера: контракты модулей, метрики, порядок работ |
+| [docs/alternatives.md](docs/alternatives.md) | Дополнения и альтернативы: трендовые сценарии, волатильность, заявка по целевому курсу, rule-play, Rust — с вердиктами и быстрыми проверками |
 | [docs/hypothesis-leadlag-findings.md](docs/hypothesis-leadlag-findings.md) | Проверка гипотезы о лид-лаге: механика расчёта курсов ЦБ, отрицательный результат по базовым индикаторам |
 | [docs/hypothesis-results.md](docs/hypothesis-results.md) | Реестр и результаты дополнительных проверок на пятилетнем OOT-периоде |
 | [docs/moex-universe.md](docs/moex-universe.md) | Каркас межрыночного universe MOEX и гейты перед массовым backfill |
