@@ -10,6 +10,7 @@
 |---|---|
 | [docs/plan.md](docs/plan.md) | План решения: рамка кейса, принятые решения по сигнальной модели, этапы |
 | [docs/prototype-brief.md](docs/prototype-brief.md) | Рабочее задание на первый прототип конвейера: контракты модулей, метрики, порядок работ |
+| [docs/alternatives.md](docs/alternatives.md) | Дополнения и альтернативы: трендовые сценарии, волатильность, заявка по целевому курсу, rule-play, Rust — с вердиктами и быстрыми проверками |
 | [docs/hypothesis-leadlag-findings.md](docs/hypothesis-leadlag-findings.md) | Проверка гипотезы о лид-лаге: механика расчёта курсов ЦБ, отрицательный результат по базовым индикаторам |
 | [docs/benchmark.md](docs/benchmark.md) | Как задачу «сейчас удачный момент» решают в финтехе, travel, e-commerce и энергетике |
 | [docs/qa-kejsodatel.md](docs/qa-kejsodatel.md) | Вопросы кейсодателю и ответы |
