@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04T13:30:00+03:00",
+  "purpose": "fixed ablation of point-in-time GDELT news features against the existing market-only daily model",
+  "market_input": "data/processed/cbr_corridor_features_2010_2026.csv",
+  "news_input": "data/processed/gdelt_news_daily_features.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "horizons": [3, 5, 10],
+  "test_years": [2021, 2022, 2023, 2024, 2025, 2026],
+  "tolerance_bps": 25,
+  "variants": ["market_only", "news_only", "market_plus_news"],
+  "market_feature_prefixes": ["base__", "leg__", "regime__", "market__"],
+  "news_feature_prefixes": ["news__"],
+  "model": "catboost",
+  "model_iterations": 80,
+  "random_seed": 20260904,
+  "minimum_training_rows": 500,
+  "policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "primary_metric": "lift_vs_same_week",
+  "required_checks": [
+    "same OOT dates for all three variants",
+    "purge equal to target horizon",
+    "continuous causal threshold across test years",
+    "raw and same-week lift",
+    "signals per week",
+    "per-year and per-corridor results"
+  ]
+}

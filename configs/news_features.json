@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source": "GDELT 2.0 Event stream or Event Mentions",
+  "date_from": "2018-01-01",
+  "date_to": "2026-09-02",
+  "source_timezone": "UTC",
+  "decision_timezone": "Europe/Moscow",
+  "daily_decision_time": "09:00",
+  "availability_delay_minutes": 15,
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "hourly_windows": [24, 72, 168],
+  "daily_windows": [1, 3, 7],
+  "shock_baselines_hours": [168, 720],
+  "shock_baselines_days": [7, 30],
+  "negative_tone_threshold": -2.0,
+  "notes": [
+    "MentionTimeDate is treated as the first observable timestamp.",
+    "A conservative 15-minute publication delay is added before a feature becomes available.",
+    "Daily features use only batches observable by 09:00 Moscow time on the feature date."
+  ]
+}

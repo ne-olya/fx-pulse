@@ -12,6 +12,7 @@
 | [docs/prototype-brief.md](docs/prototype-brief.md) | Рабочее задание на первый прототип конвейера: контракты модулей, метрики, порядок работ |
 | [docs/alternatives.md](docs/alternatives.md) | Дополнения и альтернативы: трендовые сценарии, волатильность, заявка по целевому курсу, rule-play, Rust — с вердиктами и быстрыми проверками |
 | [docs/hypothesis-leadlag-findings.md](docs/hypothesis-leadlag-findings.md) | Проверка гипотезы о лид-лаге: механика расчёта курсов ЦБ, отрицательный результат по базовым индикаторам |
+| [docs/O_news-experiment-plan.md](docs/O_news-experiment-plan.md) | Простой план новостного эксперимента: GDELT, защита от временного лика, часовые и дневные признаки |
 | [docs/hypothesis-results.md](docs/hypothesis-results.md) | Реестр и результаты дополнительных проверок на пятилетнем OOT-периоде |
 | [docs/moex-universe.md](docs/moex-universe.md) | Каркас межрыночного universe MOEX и гейты перед массовым backfill |
 | [docs/rule-selection.md](docs/rule-selection.md) | Nested walk-forward поиск rule-based и интерпретируемых ML-сигналов по межрыночному universe |
