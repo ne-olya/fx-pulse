@@ -20,6 +20,7 @@
 | Brent, EIA через FRED | 2010–2026, 4 216 строк | `data/raw/fred_brent_daily.csv` |
 | Праздники RU/AM/KZ/KG/TJ/UZ | 2018–2026, 927 строк | `data/raw/public_holidays_2018_2026.csv` |
 | Готовая панель пяти коридоров | 2010–2026, 20 581 строк | `data/processed/cbr_corridor_features_2010_2026.csv` |
+| Панель с активностью MOEX | 2010–2026, 20 581 строка, +28 признаков | `data/processed/cbr_corridor_features_with_liquidity_2010_2026.csv` |
 
 Скачивать эти данные повторно не нужно. До перепроверки в `artifacts/next_hypotheses/` лежали 25 таблиц и 13 379 строк сравнимых конфигураций. Новые волны добавили 1 545 годовых оценок и 352 665 OOT-скоров. Это число результатов, а не число независимых научных гипотез.
 
@@ -66,6 +67,7 @@
 | Causal stacking прошлых OOT-прогнозов | локальный TJS h=10, но только 146 сигналов |
 | Межкоридорное подтверждение | самая сильная новая идея; основной кандидат h=5 |
 | Cost-sensitive обучение по величине regret | локальная прибавка, слабее межкоридорного подтверждения |
+| Число сделок MOEX в CatBoost | raw lift вырос в 12/15 срезов, same-week — в 8/15; кандидат, не новый победитель |
 
 Полный построчный статус — в [O_hypothesis-log.md](O_hypothesis-log.md), машинная таблица победителей — `artifacts/next_hypotheses/best_by_horizon.csv`.
 
@@ -83,6 +85,6 @@
 
 ## Как воспроизвести
 
-Основные команды добавлены в `Makefile`: `make next-hypotheses`, `make path-label-experiment`, `make training-history-experiment`, `make brent-experiment`, `make conformal-abstention-experiment`, `make robust-innovation-experiment`, `make innovation-followup`. Общая проверка: `make test` — сейчас проходят все 110 тестов.
+Основные команды добавлены в `Makefile`: `make next-hypotheses`, `make path-label-experiment`, `make training-history-experiment`, `make brent-experiment`, `make conformal-abstention-experiment`, `make robust-innovation-experiment`, `make innovation-followup`, `make liquidity-experiment`. Общая проверка: `make test` — сейчас проходят все 120 тестов.
 
 Источники: [ЦБ РФ](https://www.cbr.ru/scripts/XML_dynamic.asp), [MOEX ISS](https://www.moex.com/a2193), [MOEX Super Candles](https://moexalgo.github.io/docs/method/supercandles/), [НБ Казахстана](https://nationalbank.kz/ru/page/rss), [ЦБ Узбекистана](https://cbu.uz/ru/arkhiv-kursov-valyut/veb-masteram/), [Brent в FRED/EIA](https://fred.stlouisfed.org/series/DCOILBRENTEU), [python-holidays](https://pypi.org/project/holidays/).

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04T14:07:33+03:00",
+  "purpose": "paired OOT ablation of lagged MOEX trading activity in the final rolling-window CatBoost",
+  "input": "data/processed/cbr_corridor_features_2010_2026.csv",
+  "moex_daily_input": "data/raw/moex_daily.csv",
+  "liquidity_output": "data/processed/moex_liquidity_features_2018_2026.csv",
+  "feature_output": "data/processed/cbr_corridor_features_with_liquidity_2010_2026.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "instruments": {
+    "cny": "CNYRUB_TOM",
+    "usd": "USD000UTSTOM",
+    "kzt": "KZTRUB_TOM"
+  },
+  "feature_sets": ["baseline", "plus_liquidity"],
+  "horizons": [3, 5, 10],
+  "evaluation_tolerance_bps": 25,
+  "training_start": "2018-01-01",
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "rolling_training_years": 4,
+  "market_lag_observations": 1,
+  "maximum_alignment_carry_days": 3,
+  "minimum_training_observations": 500,
+  "model": "catboost",
+  "model_iterations": 80,
+  "ensemble_seeds": [20260904, 20260917, 20260931],
+  "training_label": "triple_barrier",
+  "triple_barrier": {
+    "better_price_barrier_bps": 25,
+    "worse_price_barrier_bps": 50
+  },
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  }
+}

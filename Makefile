@@ -16,7 +16,7 @@ UNIVERSE_FROM ?= 2021-09-03
 UNIVERSE_TO ?= $(DATA_TO)
 SECIDS ?= CNYRUB_TOM USD000UTSTOM KZTRUB_TOM
 
-.PHONY: setup data experiment-data hourly-factor-data recipient-bank-data interest-data brent-data news-data news-features news-experiment experiment next-hypotheses adaptive-threshold recipient-leg-experiment hourly-factor-experiment regret-formulation-experiment multi-horizon-experiment temporal-sequence-experiment meta-labeling-experiment value-downside-experiment calendar-experiment holiday-experiment interest-rate-experiment regime-policy-experiment path-label-experiment garch-gate-experiment event-sampling-experiment ranking-experiment training-history-experiment technical-rule-experiment momentum-streak-experiment optimal-stopping-simulation brent-experiment shared-head-experiment conformal-abstention-experiment target-rate-simulation robust-innovation-experiment innovation-followup research-panel data-quality test backtest hypotheses hypotheses-data universe-data universe-data-all rule-selection interpretable-models local-minimum-models regret-benchmark boosting-calibration hybrid-targets dual-regret-policy
+.PHONY: setup data experiment-data hourly-factor-data recipient-bank-data interest-data brent-data news-data news-features news-experiment liquidity-experiment experiment next-hypotheses adaptive-threshold recipient-leg-experiment hourly-factor-experiment regret-formulation-experiment multi-horizon-experiment temporal-sequence-experiment meta-labeling-experiment value-downside-experiment calendar-experiment holiday-experiment interest-rate-experiment regime-policy-experiment path-label-experiment garch-gate-experiment event-sampling-experiment ranking-experiment training-history-experiment technical-rule-experiment momentum-streak-experiment optimal-stopping-simulation brent-experiment shared-head-experiment conformal-abstention-experiment target-rate-simulation robust-innovation-experiment innovation-followup research-panel data-quality test backtest hypotheses hypotheses-data universe-data universe-data-all rule-selection interpretable-models local-minimum-models regret-benchmark boosting-calibration hybrid-targets dual-regret-policy
 
 setup:
 	$(UV) sync --all-groups
@@ -51,6 +51,9 @@ news-features:
 
 news-experiment:
 	$(PYTHON) -m fxpulse.news_experiment
+
+liquidity-experiment:
+	$(PYTHON) -m fxpulse.liquidity_experiment
 
 experiment:
 	$(PYTHON) -m fxpulse.experiment
