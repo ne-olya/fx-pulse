@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04T06:59:49+03:00",
+  "purpose": "targeted second wave after the fixed 13-variant comparison, with stronger dependence correction and causal combinations of the most stable first-wave ideas",
+  "input": "data/processed/cbr_corridor_features_2010_2026.csv",
+  "wave_1_scores": "artifacts/next_hypotheses/robust_innovation/innovation_scores.csv.gz",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "horizons": [3, 5, 10],
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "stacking_test_years": [2024, 2025, 2026],
+  "evaluation_tolerance_bps": 25,
+  "variants": [
+    "continuous_tb_catboost",
+    "continuous_rolling_4y",
+    "recency_dynamic_average",
+    "robust_three_mean",
+    "robust_three_unanimous",
+    "leave_one_corridor_consensus",
+    "causal_stacking",
+    "economic_loss_catboost"
+  ],
+  "source_variants": [
+    "tb_catboost",
+    "rolling_4y_catboost",
+    "dynamic_model_average",
+    "multi_barrier_mean",
+    "sequence_catboost",
+    "cross_model_mean"
+  ],
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "dynamic_model_average": {"eta": 0.5},
+  "robust_three": ["rolling_4y_catboost", "dynamic_model_average", "multi_barrier_mean"],
+  "causal_rank_lookback": 60,
+  "stacking_sources": [
+    "rolling_4y_catboost",
+    "dynamic_model_average",
+    "multi_barrier_mean",
+    "sequence_catboost",
+    "cross_model_mean"
+  ],
+  "economic_loss": {
+    "model_iterations": 80,
+    "bad_day_weight_per_100_bps": 1.0,
+    "maximum_bad_day_weight": 6.0,
+    "triple_barrier": {"better_price_barrier_bps": 25, "worse_price_barrier_bps": 50}
+  },
+  "bootstrap": {
+    "samples": 5000,
+    "moving_block_weeks": 4,
+    "conservative_previous_trials": 13379
+  },
+  "deoverlap_cooldown_calendar_days_by_horizon": {"3": 3, "5": 5, "10": 10},
+  "random_seed": 20260904
+}
