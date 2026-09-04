@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04T06:37:21+03:00",
+  "purpose": "independent robustness audit of the three current winners plus a fixed comparison of innovative signal families",
+  "input": "data/processed/cbr_corridor_features_2010_2026.csv",
+  "short_input": "data/processed/cbr_corridor_features.csv",
+  "brent_input": "data/raw/fred_brent_daily.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "horizons": [3, 5, 10],
+  "evaluation_tolerance_bps": 25,
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "development_years": [2022, 2023, 2024],
+  "pseudo_holdout_years": [2025, 2026],
+  "nested_selection_years": [2024, 2025, 2026],
+  "minimum_training_observations": 500,
+  "model_iterations": 80,
+  "feature_prefixes": ["base__", "leg__", "regime__", "market__", "indicator__"],
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "acceptance": {
+    "minimum_total_signals": 200,
+    "minimum_signals_per_week": 0.8,
+    "maximum_signals_per_week": 1.4,
+    "minimum_raw_lift": 1.3,
+    "minimum_matched_week_lift": 1.15,
+    "minimum_pseudo_holdout_raw_lift": 1.2,
+    "minimum_worst_year_lift": 1.0
+  },
+  "variants": [
+    "tb_catboost",
+    "direct_regret_catboost",
+    "sequence_catboost",
+    "seed_mean",
+    "seed_lcb",
+    "cross_model_mean",
+    "dynamic_model_average",
+    "multi_barrier_mean",
+    "vol_scaled_barrier",
+    "rolling_4y_catboost",
+    "regime_experts",
+    "analog_knn",
+    "horizon_consensus"
+  ],
+  "triple_barrier": {
+    "better_price_barrier_bps": 25,
+    "worse_price_barrier_bps": 50
+  },
+  "multi_barriers_bps": [[15, 30], [25, 50], [50, 100]],
+  "volatility_barrier": {
+    "volatility_column": "base__volatility_20",
+    "better_sigma_fraction": 0.35,
+    "worse_sigma_fraction": 0.7,
+    "better_bps_bounds": [15, 100],
+    "worse_bps_bounds": [30, 200]
+  },
+  "sequence": {
+    "source_columns": ["base__return_1", "leg__usd_rub_return_1", "leg__local_per_usd_return_1"],
+    "lags": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  },
+  "ensemble_seeds": [20260904, 20260917, 20260931, 20260943, 20260959],
+  "seed_lcb_penalty": 0.5,
+  "dynamic_model_average": {"eta": 0.5},
+  "rolling_training_years": 4,
+  "analog_knn": {
+    "neighbors": 75,
+    "feature_columns": [
+      "base__return_1",
+      "base__return_3",
+      "base__return_5",
+      "base__return_10",
+      "base__volatility_5",
+      "base__volatility_20",
+      "base__percentile_20",
+      "base__percentile_60",
+      "base__zscore_20",
+      "base__zscore_60",
+      "leg__usd_rub_return_3",
+      "leg__local_per_usd_return_3",
+      "regime__volatility_percentile_252",
+      "regime__trend_strength_20"
+    ]
+  },
+  "winner_recheck_seeds": [20261001, 20261019, 20261031, 20261043, 20261061],
+  "bootstrap_samples": 5000,
+  "placebo_samples": 2000,
+  "random_seed": 20260904,
+  "current_winners": [
+    {
+      "name": "h3_amd_xgboost_sequence",
+      "horizon": 3,
+      "corridor": "AMD",
+      "artifact_family": "temporal_sequence",
+      "model": "xgboost",
+      "feature_set": "plus_sequence"
+    },
+    {
+      "name": "h5_amd_catboost_tb_history2010",
+      "horizon": 5,
+      "corridor": "AMD",
+      "artifact_family": "training_history",
+      "model": "catboost",
+      "feature_set": "history_from_2010"
+    },
+    {
+      "name": "h10_tjs_catboost_tb_brent",
+      "horizon": 10,
+      "corridor": "TJS",
+      "artifact_family": "brent",
+      "model": "catboost",
+      "feature_set": "plus_brent"
+    }
+  ]
+}
