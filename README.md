@@ -26,6 +26,7 @@
 | [docs/O_experiment-results.md](docs/O_experiment-results.md) | Данные и честный итог первого дневного/часового эксперимента |
 | [docs/O_final-research-plan.md](docs/O_final-research-plan.md) | Единый итог всех проверок, готовые данные и приоритетные следующие гипотезы |
 | [docs/O_hypothesis-log.md](docs/O_hypothesis-log.md) | Короткий журнал заранее зафиксированных новых проверок |
+| [docs/O_robust-innovation-results.md](docs/O_robust-innovation-results.md) | Перепроверка прежних победителей, 21 зафиксированный вариант и честный итог |
 
 ## Данные
 

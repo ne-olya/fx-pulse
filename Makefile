@@ -16,7 +16,7 @@ UNIVERSE_FROM ?= 2021-09-03
 UNIVERSE_TO ?= $(DATA_TO)
 SECIDS ?= CNYRUB_TOM USD000UTSTOM KZTRUB_TOM
 
-.PHONY: setup data experiment-data hourly-factor-data recipient-bank-data interest-data brent-data experiment next-hypotheses adaptive-threshold recipient-leg-experiment hourly-factor-experiment regret-formulation-experiment multi-horizon-experiment temporal-sequence-experiment meta-labeling-experiment value-downside-experiment calendar-experiment holiday-experiment interest-rate-experiment regime-policy-experiment path-label-experiment garch-gate-experiment event-sampling-experiment ranking-experiment training-history-experiment technical-rule-experiment momentum-streak-experiment optimal-stopping-simulation brent-experiment shared-head-experiment conformal-abstention-experiment target-rate-simulation research-panel data-quality test backtest hypotheses hypotheses-data universe-data universe-data-all rule-selection interpretable-models local-minimum-models regret-benchmark boosting-calibration hybrid-targets dual-regret-policy
+.PHONY: setup data experiment-data hourly-factor-data recipient-bank-data interest-data brent-data experiment next-hypotheses adaptive-threshold recipient-leg-experiment hourly-factor-experiment regret-formulation-experiment multi-horizon-experiment temporal-sequence-experiment meta-labeling-experiment value-downside-experiment calendar-experiment holiday-experiment interest-rate-experiment regime-policy-experiment path-label-experiment garch-gate-experiment event-sampling-experiment ranking-experiment training-history-experiment technical-rule-experiment momentum-streak-experiment optimal-stopping-simulation brent-experiment shared-head-experiment conformal-abstention-experiment target-rate-simulation robust-innovation-experiment innovation-followup research-panel data-quality test backtest hypotheses hypotheses-data universe-data universe-data-all rule-selection interpretable-models local-minimum-models regret-benchmark boosting-calibration hybrid-targets dual-regret-policy
 
 setup:
 	$(UV) sync --all-groups
@@ -120,6 +120,12 @@ conformal-abstention-experiment:
 
 target-rate-simulation:
 	$(PYTHON) -m fxpulse.target_rate_simulation --config configs/target_rate_simulation.json --artifact-dir artifacts/next_hypotheses/target_rate
+
+robust-innovation-experiment:
+	$(PYTHON) -m fxpulse.robust_innovation_experiment --config configs/robust_innovation_experiment.json --artifact-dir artifacts/next_hypotheses/robust_innovation
+
+innovation-followup:
+	$(PYTHON) -m fxpulse.innovation_followup --config configs/innovation_followup.json --artifact-dir artifacts/next_hypotheses/innovation_followup
 
 research-panel:
 	$(PYTHON) -m fxpulse.data.assemble
