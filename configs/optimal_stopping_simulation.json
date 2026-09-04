@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "simulate a causal buy-now-or-wait policy with a forced client deadline",
+  "scores_input": "artifacts/next_hypotheses/wave_1/scores.csv",
+  "feature_set": "interpretable_indicators",
+  "tolerance_bps": 25,
+  "models": ["catboost", "xgboost"],
+  "deadlines_observations": [5, 10],
+  "policies": ["buy_first", "static_score", "relaxing_score", "random_expected", "oracle"],
+  "score_lookback": 60,
+  "minimum_score_history": 20,
+  "static_top_share": 0.4,
+  "relaxing_start_top_share": 0.2
+}

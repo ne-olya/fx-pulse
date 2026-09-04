@@ -191,6 +191,49 @@ def _moex_candles_section(raw_dir: Path) -> tuple[str, dict[str, int]]:
     return section, {"moex_candle_rows": len(frame), "moex_candle_duplicates": duplicates}
 
 
+def _moex_hourly_section(raw_dir: Path) -> tuple[str, dict[str, int]]:
+    path = raw_dir / "moex_cny_60m.csv"
+    if not path.exists():
+        return "", {"moex_hourly_rows": 0, "moex_hourly_duplicates": 0}
+    frame = pd.read_csv(path)
+    required = {"dt_msk", "secid", "open", "high", "low", "close", "fetched_at", "source_url"}
+    missing = required - set(frame.columns)
+    if missing:
+        raise ValueError(f"{path} is missing required columns: {', '.join(sorted(missing))}")
+    frame["dt_msk"] = pd.to_datetime(frame["dt_msk"], errors="raise")
+    for column in ("open", "high", "low", "close"):
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    rows: list[tuple[object, ...]] = []
+    for secid, group in frame.groupby("secid", sort=True):
+        invalid = group[["open", "high", "low", "close"]].isna().any(axis=1) | group["close"].le(0)
+        per_day = group.groupby(group["dt_msk"].dt.date).size()
+        rows.append(
+            (
+                secid,
+                len(group),
+                int(group.duplicated("dt_msk").sum()),
+                int(invalid.sum()),
+                group["dt_msk"].min(),
+                group["dt_msk"].max(),
+                _number(per_day.median(), 1),
+            )
+        )
+    duplicates = int(frame.duplicated(["dt_msk", "secid"]).sum())
+    section = "\n".join(
+        [
+            "## MOEX, часовые свечи эксперимента",
+            "",
+            _markdown_table(
+                ("Инструмент", "Строк", "Дубли", "Невалидных", "Начало", "Конец", "Медиана свечей/день"),
+                rows,
+            ),
+            "",
+            "Одна строка известна только после времени `dt_msk`, то есть после закрытия соответствующей свечи.",
+        ]
+    )
+    return section, {"moex_hourly_rows": len(frame), "moex_hourly_duplicates": duplicates}
+
+
 def build_report(raw_dir: Path | str = Path("data/raw")) -> str:
     """Return the Markdown quality report for the currently downloaded raw data."""
 
@@ -198,10 +241,11 @@ def build_report(raw_dir: Path | str = Path("data/raw")) -> str:
     cbr, cbr_summary = _cbr_section(raw_path)
     daily, daily_summary = _moex_daily_section(raw_path)
     candles, candles_summary = _moex_candles_section(raw_path)
+    hourly, hourly_summary = _moex_hourly_section(raw_path)
     boundaries = ("2022-01-01", "2024-06-13", "2024-12-27")
     present = pd.read_csv(raw_path / "cbr_daily.csv", usecols=["rate_date"])["rate_date"].astype(str)
     boundary_rows = [(boundary, "да" if boundary in set(present) else "нет") for boundary in boundaries]
-    summary = {**cbr_summary, **daily_summary, **candles_summary}
+    summary = {**cbr_summary, **daily_summary, **candles_summary, **hourly_summary}
     return "\n".join(
         [
             "# Качество данных",
@@ -213,6 +257,7 @@ def build_report(raw_dir: Path | str = Path("data/raw")) -> str:
             f"- ЦБ: {summary['cbr_rows']} строк, дубликатов ключа `(rate_date, ccy)` — {summary['cbr_duplicates']}.",
             f"- MOEX дневной: {summary['moex_daily_rows']} строк, дубликатов `(trade_date, secid)` — {summary['moex_daily_duplicates']}.",
             f"- MOEX 10 минут: {summary['moex_candle_rows']} строк, дубликатов `(dt_msk, secid)` — {summary['moex_candle_duplicates']}.",
+            f"- MOEX 1 час: {summary['moex_hourly_rows']} строк, дубликатов `(dt_msk, secid)` — {summary['moex_hourly_duplicates']}.",
             "- Исправление в аналитическом слое: технические нулевые MOEX `close` не переносятся вперёд и не становятся ценой; они остаются в raw и исключаются из панели с предупреждением.",
             "- Известное ограничение: пока не загружены ноги нацбанков и производственные календари, нельзя завершить их сверку и отличить официальный перенос от праздника страны-получателя.",
             "",
@@ -221,6 +266,8 @@ def build_report(raw_dir: Path | str = Path("data/raw")) -> str:
             daily,
             "",
             candles,
+            "",
+            hourly,
             "",
             "## Границы режимов",
             "",

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "exploratory independent USD/local leg ablation",
+  "corridors": {
+    "UZS": {"bank": "CBU_UZ", "test_years": [2022, 2023, 2024, 2025, 2026]},
+    "KZT": {"bank": "NBK_KZ", "test_years": [2024, 2025, 2026]}
+  },
+  "horizons": [3, 5, 10],
+  "tolerance_bps": 25,
+  "feature_sets": ["existing", "plus_independent_leg"],
+  "models": ["catboost", "xgboost"],
+  "recipient_rate_lag_observations": 1,
+  "minimum_training_observations": 400,
+  "model_iterations": 80,
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "random_seed": 20260904
+}

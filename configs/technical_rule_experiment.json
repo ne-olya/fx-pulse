@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "close the documented fixed-filter and moving-average crossover hypotheses",
+  "cbr_input": "data/processed/cbr_corridor_features.csv",
+  "moex_input": "data/raw/moex_cny_daily.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS", "CNY_MOEX"],
+  "evaluation_from": "2022-01-01",
+  "evaluation_to": "2026-09-02",
+  "horizons": [3, 5, 10],
+  "tolerance_bps": 25,
+  "return_windows": [1, 3, 5],
+  "fixed_move_percent": [0.5, 1.0, 2.0, 3.0],
+  "moving_average_pairs": [[3, 10], [5, 20], [10, 50], [20, 60]],
+  "cooldown_days": 3,
+  "weekly_cap": 2
+}

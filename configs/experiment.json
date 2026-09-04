@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "description": "Исследовательский дневной и часовой эксперимент; для подтверждения нужен новый закрытый период.",
+  "target": {
+    "secid": "CNYRUB_TOM",
+    "tolerance_bps": 10.0
+  },
+  "datasets": {
+    "daily": {
+      "path": "data/raw/moex_cny_daily.csv",
+      "horizons": [1, 3, 5, 10, 20],
+      "return_windows": [1, 3, 5, 10, 20],
+      "volatility_windows": [5, 20, 60],
+      "level_windows": [20, 60, 252]
+    },
+    "hourly": {
+      "path": "data/raw/moex_cny_60m.csv",
+      "horizons": [1, 4, 8, 24],
+      "return_windows": [1, 4, 8, 24],
+      "volatility_windows": [8, 24, 80],
+      "level_windows": [24, 120, 360]
+    }
+  },
+  "validation": {
+    "test_years": [2021, 2022, 2023, 2024, 2025, 2026],
+    "score_quantiles": [0.5, 0.7, 0.8, 0.9, 0.95],
+    "minimum_validation_signals": 10,
+    "minimum_validation_lift": 1.0,
+    "minimum_signals_per_week": 0.5,
+    "maximum_signals_per_week": 2.0,
+    "weekly_cap": 2
+  },
+  "models": ["logistic", "random_forest", "xgboost"]
+}

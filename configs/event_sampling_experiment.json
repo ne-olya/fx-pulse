@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "test whether price-move events reduce clustered low-value notifications",
+  "scores_input": "artifacts/next_hypotheses/wave_1/scores.csv",
+  "features_input": "data/processed/cbr_corridor_features.csv",
+  "feature_set": "interpretable_indicators",
+  "tolerance_bps": 25,
+  "models": ["catboost", "xgboost"],
+  "horizons": [3, 5, 10],
+  "event_gates": ["all_days", "absolute_move_1sigma", "cusum_0.5sigma", "cusum_1sigma"],
+  "top_score_share": 0.4,
+  "lookback_observations": 60,
+  "minimum_history_observations": 20,
+  "cooldown_days": 3,
+  "weekly_cap": 2
+}

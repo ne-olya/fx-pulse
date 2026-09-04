@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "exploratory comparison of direct ranking and explainable rule-candidate plus ML filtering",
+  "input": "data/processed/cbr_corridor_features.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "scopes": ["per_corridor", "pooled"],
+  "horizons": [3, 5, 10],
+  "tolerance_bps": 25,
+  "model": "catboost",
+  "rules": [
+    {"name": "all_days", "top_score_share": 0.4},
+    {"name": "cheap_or_near_min", "top_score_share": 0.7},
+    {"name": "indicator_vote_2", "top_score_share": 0.7}
+  ],
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "minimum_training_observations": 300,
+  "model_iterations": 80,
+  "adaptive_policy": {
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "random_seed": 20260904
+}

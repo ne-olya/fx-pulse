@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "exploratory soft combination of known current value and modeled future downside",
+  "scores": "artifacts/next_hypotheses/wave_1/scores.csv",
+  "features": "data/processed/cbr_corridor_features.csv",
+  "feature_set": "interpretable_indicators",
+  "tolerance_bps": 25,
+  "models": ["catboost", "xgboost"],
+  "horizons": [3, 5, 10],
+  "combinations": ["model_only", "balanced_mean", "conjunction_min"],
+  "model_rank_lookback": 60,
+  "minimum_rank_history": 20,
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "simulate a client target-rate order as the second action after a push",
+  "input": "data/processed/cbr_corridor_features.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "target_improvements_percent": [0.5, 1.0, 2.0],
+  "deadlines_calendar_days": [7, 14, 30],
+  "from_date": "2018-01-01",
+  "to_date": "2026-09-02"
+}

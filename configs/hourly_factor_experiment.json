@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "exploratory hourly cross-market factor ablation",
+  "input": "data/raw/moex_cets_factors_60m.csv",
+  "target_secid": "CNYRUB_TOM",
+  "factor_secids": ["USD000UTSTOM", "KZTRUB_TOM", "GLDRUB_TOM", "SLVRUB_TOM"],
+  "horizons": [1, 4, 8, 24],
+  "tolerance_bps": [10, 25],
+  "feature_sets": ["cny_only", "plus_external_factors"],
+  "models": ["catboost", "xgboost"],
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "minimum_training_observations": 2000,
+  "model_iterations": 80,
+  "factor_asof_tolerance_hours": 3,
+  "adaptive_policy": {
+    "top_score_share": [0.02, 0.04],
+    "lookback_observations": 500,
+    "minimum_history_observations": 100,
+    "cooldown_hours": [24, 72],
+    "weekly_cap": 2
+  },
+  "random_seed": 20260904
+}

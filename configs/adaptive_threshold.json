@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_adaptive_results",
+  "registered_at": "2026-09-03",
+  "parent_scores": "artifacts/next_hypotheses/wave_1/scores.csv",
+  "hypothesis": "A causal trailing score quantile restores useful coverage under score drift without using labels.",
+  "top_score_share": [0.2, 0.3, 0.4],
+  "lookback_observations": [60, 252],
+  "minimum_history_observations": 20,
+  "cooldown_days": [3, 5],
+  "weekly_cap": 2,
+  "minimum_summary_signals": 50,
+  "frequency_range_per_corridor_week": [1.0, 2.0]
+}

@@ -3,6 +3,7 @@ from __future__ import annotations
 import datetime as dt
 
 import pandas as pd
+import pytest
 
 from fxpulse.data import cbr, moex
 from fxpulse.data.cbr import parse_cbr_xml
@@ -125,3 +126,35 @@ def test_moex_daily_cli_does_not_pass_a_candle_only_argument(monkeypatch, tmp_pa
 
     assert calls[0]["date_from"] == dt.date(2026, 1, 1)
     assert "chunk_days" not in calls[0]
+
+
+def test_moex_candle_cli_passes_hourly_interval(monkeypatch, tmp_path) -> None:
+    calls = []
+    monkeypatch.setattr(moex, "fetch_moex_candles", lambda **kwargs: calls.append(kwargs) or 1)
+
+    moex.main(
+        [
+            "candles",
+            "--from",
+            "2026-01-01",
+            "--to",
+            "2026-01-02",
+            "--interval",
+            "60",
+            "--output",
+            str(tmp_path / "hourly.csv"),
+        ]
+    )
+
+    assert calls[0]["interval"] == 60
+
+
+def test_moex_candle_downloader_rejects_unsupported_interval(tmp_path) -> None:
+    with pytest.raises(ValueError, match="interval"):
+        moex.fetch_moex_candles(
+            date_from=dt.date(2026, 1, 1),
+            date_to=dt.date(2026, 1, 2),
+            secids=("CNYRUB_TOM",),
+            interval=30,
+            output_path=tmp_path / "candles.csv",
+        )

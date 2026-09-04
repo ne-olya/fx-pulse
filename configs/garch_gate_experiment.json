@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "exploratory OOT GARCH volatility forecast and regime-gate test",
+  "features": "data/processed/cbr_corridor_features.csv",
+  "scores": "artifacts/next_hypotheses/wave_1/scores.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "score_feature_set": "interpretable_indicators",
+  "tolerance_bps": 25,
+  "models": ["catboost", "xgboost"],
+  "horizons": [3, 5, 10],
+  "gates": ["no_gate", "low_mid_forecast_vol", "high_forecast_vol"],
+  "high_vol_percentile": 0.67,
+  "volatility_rank_lookback": 60,
+  "minimum_rank_history": 20,
+  "minimum_garch_observations": 500,
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  }
+}

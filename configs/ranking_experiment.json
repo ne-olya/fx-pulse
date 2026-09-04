@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "compare independent classification with ranking days inside historical corridor-weeks",
+  "input": "data/processed/cbr_corridor_features.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "scopes": ["per_corridor", "pooled"],
+  "horizons": [3, 5, 10],
+  "evaluation_tolerance_bps": 25,
+  "relevance_boundaries_bps": [25, 50, 100],
+  "models": ["xgboost_classifier", "xgboost_ranker"],
+  "ranking_group": "corridor_iso_week",
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "minimum_training_observations": 500,
+  "model_iterations": 80,
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "random_seed": 20260904
+}

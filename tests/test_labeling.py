@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 
 import pandas as pd
+import pytest
 
 from fxpulse.labeling import (
     evaluate_positions,
@@ -35,6 +36,19 @@ def test_labels_use_only_future_prices_and_keep_symmetric_label_separate() -> No
     assert pd.isna(labels.loc[0, "benefit_sym_bps"])
     assert labels.loc[1, "benefit_sym_bps"] == 1_666.6666666666674
     assert labels.loc[1, "benefit_fwd_bps"] == 2_222.222222222223
+
+
+def test_labels_support_intraday_horizons() -> None:
+    labels = label_observations(_panel([10.0, 8.0, 9.0, 10.0, 11.0, 12.0]), horizon=4)
+
+    assert labels["position"].tolist() == [0, 1]
+    assert not bool(labels.loc[0, "hit_favorable"])
+    assert bool(labels.loc[1, "hit_favorable"])
+
+
+def test_labels_reject_invalid_horizon() -> None:
+    with pytest.raises(ValueError, match="positive integer"):
+        label_observations(_panel([10.0, 11.0]), horizon=0)
 
 
 def test_carried_observations_are_excluded_instead_of_filled() -> None:

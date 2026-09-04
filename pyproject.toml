@@ -8,6 +8,10 @@ version = "0.1.0"
 description = "Signals for favorable cross-border transfer moments"
 requires-python = ">=3.12"
 dependencies = [
+    "arch>=7.2,<8",
+    "catboost>=1.2.8,<2",
+    "certifi>=2025.8.3,<2027",
+    "holidays>=0.80,<1",
     "pandas>=2.2,<3",
     "scikit-learn>=1.7,<2",
     "xgboost>=3.0,<4",

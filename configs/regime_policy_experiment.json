@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "exploratory causal comparison of one threshold and regime-aware selective policies",
+  "input": "artifacts/next_hypotheses/wave_1/scores.csv",
+  "feature_set": "interpretable_indicators",
+  "tolerance_bps": 25,
+  "models": ["catboost", "xgboost"],
+  "horizons": [3, 5, 10],
+  "policies": ["global", "per_regime", "exclude_shock"],
+  "top_score_share": 0.4,
+  "lookback_observations": 60,
+  "minimum_history_observations": 20,
+  "minimum_regime_history_observations": 10,
+  "cooldown_days": 3,
+  "weekly_cap": 2
+}

@@ -11,6 +11,7 @@ import argparse
 import csv
 import datetime as dt
 import os
+import ssl
 import time
 import urllib.parse
 import urllib.error
@@ -18,6 +19,8 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from uuid import uuid4
+
+import certifi
 
 
 CBR_SERIES: dict[str, str] = {
@@ -33,6 +36,7 @@ CBR_SERIES: dict[str, str] = {
 CBR_URL = "https://www.cbr.ru/scripts/XML_dynamic.asp"
 RAW_COLUMNS = ("rate_date", "ccy", "nominal", "rate_rub", "fetched_at", "source_url")
 USER_AGENT = "fx-pulse/0.1 (+https://github.com/ne-olya/fx-pulse)"
+TLS_CONTEXT = ssl.create_default_context(cafile=certifi.where())
 
 
 def _format_url(currency_id: str, date_from: dt.date, date_to: dt.date) -> str:
@@ -67,7 +71,7 @@ def _download(url: str, *, timeout: int, attempts: int = 3) -> bytes:
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     for attempt in range(attempts):
         try:
-            with urllib.request.urlopen(request, timeout=timeout) as response:
+            with urllib.request.urlopen(request, timeout=timeout, context=TLS_CONTEXT) as response:
                 return response.read()
         except (OSError, urllib.error.URLError):
             if attempt + 1 == attempts:

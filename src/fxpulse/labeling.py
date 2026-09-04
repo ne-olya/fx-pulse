@@ -38,8 +38,8 @@ def label_observations(panel: pd.DataFrame, horizon: int, *, tolerance_bps: floa
     indicator or `signals_as_of`.
     """
 
-    if horizon not in HORIZONS:
-        raise ValueError(f"horizon must be one of {HORIZONS}")
+    if not isinstance(horizon, int) or isinstance(horizon, bool) or horizon <= 0:
+        raise ValueError("horizon must be a positive integer")
     if not isinstance(tolerance_bps, int | float) or not math.isfinite(float(tolerance_bps)) or tolerance_bps < 0:
         raise ValueError("tolerance_bps must be a finite non-negative number")
     ordered = _ordered(panel)

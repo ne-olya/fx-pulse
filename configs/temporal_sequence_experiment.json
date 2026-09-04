@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "exploratory test of whether the ordered shape of past daily moves adds value beyond rolling features",
+  "input": "data/processed/cbr_corridor_features.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "scopes": ["per_corridor", "pooled"],
+  "horizons": [3, 5, 10],
+  "tolerance_bps": 25,
+  "models": ["catboost", "xgboost"],
+  "feature_sets": ["interpretable", "plus_sequence"],
+  "sequence_source_columns": [
+    "base__return_1",
+    "leg__usd_rub_return_1",
+    "leg__local_per_usd_return_1",
+    "market__cny_return_1",
+    "market__gold_return_1"
+  ],
+  "sequence_lags": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "minimum_training_observations": 500,
+  "model_iterations": 80,
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "random_seed": 20260904
+}

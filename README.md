@@ -18,6 +18,14 @@
 | [docs/local-minimum-models.md](docs/local-minimum-models.md) | Проверка рекомендаций о будущем минимуме CNY/RUB на горизонтах 1/5/20 дней |
 | [docs/benchmark.md](docs/benchmark.md) | Как задачу «сейчас удачный момент» решают в финтехе, travel, e-commerce и энергетике |
 | [docs/qa-kejsodatel.md](docs/qa-kejsodatel.md) | Вопросы кейсодателю и ответы |
+| [docs/project-description.md](docs/project-description.md) | Полное описание проекта; дополнено результатами расширенного эксперимента |
+| [docs/product-materials.md](docs/product-materials.md) | Продуктовая постановка и выводы для пользовательского сценария |
+| [docs/O_additional-materials-interim.md](docs/O_additional-materials-interim.md) | Самодостаточные дополнительные материалы для промежуточной сдачи |
+| [docs/O_labeling.md](docs/O_labeling.md) | Схема разметки, целевые переменные и выбор дневной/часовой гранулярности |
+| [docs/O_experiment-plan.md](docs/O_experiment-plan.md) | Короткий словарь и план эксперимента с сигнальной моделью |
+| [docs/O_experiment-results.md](docs/O_experiment-results.md) | Данные и честный итог первого дневного/часового эксперимента |
+| [docs/O_final-research-plan.md](docs/O_final-research-plan.md) | Единый итог всех проверок, готовые данные и приоритетные следующие гипотезы |
+| [docs/O_hypothesis-log.md](docs/O_hypothesis-log.md) | Короткий журнал заранее зафиксированных новых проверок |
 
 ## Данные
 
@@ -27,7 +35,7 @@
 |---|---|
 | ЦБ РФ, `XML_dynamic.asp` | Дневные официальные курсы: USD, EUR, CNY, TJS, UZS, KGS, KZT, AMD |
 | MOEX ISS | `CNYRUB_TOM`, `USD000UTSTOM`, `KZTRUB_TOM` — дневные и внутридневные свечи, объёмы, число сделок |
-| Нацбанки стран-получателей | Официальные курсы USD/XXX: НБ РК (RSS), ЦБ РУз (JSON), НБ КР (XML), ЦБ РА (JSON), НБТ (HTML) |
+| Нацбанки стран-получателей | Уже скачаны USD и RUB НБ Казахстана/ЦБ Узбекистана; KGS/AMD/TJS пока в плане |
 
 Точные эндпоинты и схемы файлов — в [docs/prototype-brief.md](docs/prototype-brief.md), раздел 3.
 
@@ -49,11 +57,52 @@ make backtest   # signals.csv, metrics.csv и run_meta.json
 ```
 
 `make data` загружает данные в игнорируемую Git папку `data/raw/`. По умолчанию
-дневная история запрашивается с 2018-01-01, а интрадей — с 2026-08-01: MOEX
-хранит конечную интрадей-историю. Интервал можно изменить явно:
+дневная история запрашивается с 2018-01-01, а 10-минутная — только с
+2026-08-01, чтобы быстрый запуск не создавал большой файл. Интервал можно
+изменить явно:
 
 ```bash
 make data CANDLE_FROM=2026-01-01 DATA_TO=2026-09-02
+```
+
+Отдельный дневной и часовой эксперимент:
+
+```bash
+make experiment-data  # снимок CNY/RUB с 2018 года
+make experiment       # разметка, walk-forward и таблицы результатов
+```
+
+Новые данные и зарегистрированные проверки:
+
+```bash
+make hourly-factor-data          # CNY/USD/KZT/золото/серебро, час
+make recipient-bank-data         # НБ Казахстана/ЦБ Узбекистана с кэшем ответов
+make research-panel
+make next-hypotheses             # 397 дневных задач на пяти коридорах
+make adaptive-threshold          # causal trailing threshold
+make recipient-leg-experiment   # независимые USD/local ноги
+make hourly-factor-experiment    # внешние факторы до CNY-свечи
+make regret-formulation-experiment
+make multi-horizon-experiment
+make temporal-sequence-experiment
+make meta-labeling-experiment
+make value-downside-experiment
+make calendar-experiment
+make interest-rate-experiment
+make regime-policy-experiment
+make path-label-experiment
+make garch-gate-experiment
+make event-sampling-experiment
+make holiday-experiment
+make ranking-experiment
+make training-history-experiment
+make technical-rule-experiment
+make momentum-streak-experiment
+make optimal-stopping-simulation
+make brent-data && make brent-experiment
+make shared-head-experiment
+make conformal-abstention-experiment
+make target-rate-simulation
 ```
 
 Панель загружается через `fxpulse.panel.load_panel`. Она физически исключает

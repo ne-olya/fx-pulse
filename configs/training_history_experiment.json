@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "test whether adding eight earlier years improves the strongest path-label model",
+  "cbr_input": "data/raw/cbr_daily_2010_2026.csv",
+  "market_input": "data/processed/research_daily_panel.csv",
+  "feature_output": "data/processed/cbr_corridor_features_2010_2026.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "scopes": ["per_corridor", "pooled"],
+  "horizons": [3, 5, 10],
+  "evaluation_tolerance_bps": 25,
+  "training_starts": ["2010-01-01", "2018-01-01"],
+  "training_label": "triple_barrier",
+  "triple_barrier": {"better_price_barrier_bps": 25, "worse_price_barrier_bps": 50},
+  "model": "catboost",
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "minimum_training_observations": 500,
+  "model_iterations": 80,
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "random_seed": 20260904
+}

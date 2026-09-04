@@ -1,4 +1,4 @@
-"""Paginated MOEX ISS downloaders for daily history and 10-minute candles."""
+"""Paginated MOEX ISS downloaders for daily and intraday history."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ import csv
 import datetime as dt
 import json
 import os
+import ssl
 import time
 import urllib.parse
 import urllib.error
@@ -16,9 +17,12 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
+import certifi
+
 
 MOEX_BASE = "https://iss.moex.com/iss"
 DEFAULT_SECIDS = ("CNYRUB_TOM", "USD000UTSTOM", "KZTRUB_TOM")
+SUPPORTED_CANDLE_INTERVALS = (10, 60)
 DAILY_COLUMNS = (
     "trade_date",
     "secid",
@@ -44,6 +48,7 @@ CANDLE_COLUMNS = (
     "source_url",
 )
 USER_AGENT = "fx-pulse/0.1 (+https://github.com/ne-olya/fx-pulse)"
+TLS_CONTEXT = ssl.create_default_context(cafile=certifi.where())
 
 
 def _date(value: str) -> dt.date:
@@ -82,7 +87,7 @@ def _request_json(
     request = urllib.request.Request(request_url, headers={"User-Agent": USER_AGENT})
     for attempt in range(attempts):
         try:
-            with urllib.request.urlopen(request, timeout=timeout) as response:
+            with urllib.request.urlopen(request, timeout=timeout, context=TLS_CONTEXT) as response:
                 return json.loads(response.read().decode("utf-8"))
         except (OSError, urllib.error.URLError):
             if attempt + 1 == attempts:
@@ -225,8 +230,8 @@ def fetch_moex_candles(
     timeout: int = 60,
     chunk_days: int = 31,
 ) -> int:
-    if interval != 10:
-        raise ValueError("The prototype contract supports only 10-minute candles")
+    if interval not in SUPPORTED_CANDLE_INTERVALS:
+        raise ValueError(f"Candle interval must be one of {SUPPORTED_CANDLE_INTERVALS} minutes")
     if date_from > date_to:
         raise ValueError("date_from must not be later than date_to")
     rows = (
@@ -249,6 +254,7 @@ def main(argv: list[str] | None = None) -> None:
         command_parser.add_argument("--output", type=Path, default=Path(default_output))
         if command == "candles":
             command_parser.add_argument("--chunk-days", type=int, default=31)
+            command_parser.add_argument("--interval", type=int, choices=SUPPORTED_CANDLE_INTERVALS, default=10)
 
     args = parser.parse_args(argv)
     if args.command == "daily":
@@ -264,9 +270,11 @@ def main(argv: list[str] | None = None) -> None:
             date_to=args.date_to,
             secids=tuple(args.secids),
             output_path=args.output,
+            interval=args.interval,
             chunk_days=args.chunk_days,
         )
-    print(f"Wrote {count} MOEX {args.command} rows to {args.output}")
+    interval = f" ({args.interval} min)" if args.command == "candles" else ""
+    print(f"Wrote {count} MOEX {args.command}{interval} rows to {args.output}")
 
 
 if __name__ == "__main__":

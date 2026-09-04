@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "compare the adaptive rank policy with rolling delayed-label conformal abstention",
+  "scores_input": "artifacts/next_hypotheses/wave_1/scores.csv",
+  "feature_set": "interpretable_indicators",
+  "tolerance_bps": 25,
+  "models": ["catboost", "xgboost"],
+  "horizons": [3, 5, 10],
+  "policies": ["adaptive_top40", "conformal_alpha_0.05", "conformal_alpha_0.10", "conformal_alpha_0.20"],
+  "calibration_lookback_observations": 252,
+  "minimum_calibration_observations": 60,
+  "adaptive_top_score_share": 0.4,
+  "adaptive_lookback_observations": 60,
+  "adaptive_minimum_history": 20,
+  "cooldown_days": 3,
+  "weekly_cap": 2
+}

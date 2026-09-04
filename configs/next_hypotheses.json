@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-03",
+  "primary_metric": "lift",
+  "acceptance": {
+    "minimum_lift": 1.3,
+    "minimum_signals_per_week": 1.0,
+    "maximum_signals_per_week": 2.0,
+    "require_positive_net_benefit": true,
+    "require_no_failed_holdout_regime": true
+  },
+  "regret": {
+    "daily_horizons": [3, 5, 10],
+    "tolerance_bps": [25, 50, 75, 100],
+    "classes_bps": [25, 50, 100],
+    "models": ["logistic", "catboost", "xgboost", "quantile_regression"]
+  },
+  "selective_prediction": {
+    "top_score_share": [0.05, 0.1, 0.15, 0.2],
+    "cooldown_days": [3, 5],
+    "calibration": ["none", "sigmoid", "isotonic"],
+    "weekly_cap": 2
+  },
+  "regimes": {
+    "volatility_quantiles": [0.33, 0.67],
+    "trend_windows": [5, 20],
+    "shock_quantile": 0.95,
+    "structural_boundaries": ["2022-02-24", "2024-06-13"]
+  },
+  "corridors": ["TJS", "UZS", "KGS", "AMD", "KZT"],
+  "usd_decomposition": true,
+  "value_downside": true,
+  "pooled_corridor_model": true,
+  "outlier_models": ["isolation_forest", "robust_mahalanobis"],
+  "wave_1": {
+    "purpose": "exploratory_only",
+    "target_source": "CBR daily RUB per recipient currency unit",
+    "market_factor_lag_observations": 1,
+    "test_years": [2022, 2023, 2024, 2025, 2026],
+    "minimum_training_observations": 500,
+    "models": ["logistic", "catboost", "xgboost"],
+    "model_iterations": 80,
+    "feature_sets": ["base", "usd_legs", "regimes", "curated_market", "interpretable_indicators", "outliers"],
+    "target_grid_feature_sets": ["base", "interpretable_indicators"],
+    "ablation_horizon": 5,
+    "ablation_tolerance_bps": 50,
+    "pooled_model": "catboost",
+    "matched_random_samples": 500,
+    "value_percentile_max": 0.3,
+    "random_seed": 20260903
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "literal test of the documented inverted-momentum rule: N consecutive rising days imply a closing window",
+  "cbr_input": "data/processed/cbr_corridor_features.csv",
+  "moex_input": "data/raw/moex_cny_daily.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS", "CNY_MOEX"],
+  "evaluation_from": "2022-01-01",
+  "evaluation_to": "2026-09-02",
+  "horizons": [3, 5, 10],
+  "tolerance_bps": 25,
+  "return_windows": [],
+  "fixed_move_percent": [],
+  "streak_lengths": [2, 3, 4, 5],
+  "moving_average_pairs": [],
+  "cooldown_days": 3,
+  "weekly_cap": 2
+}

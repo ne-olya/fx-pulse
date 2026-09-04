@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "exploratory agreement of independently trained h=3/5/10 models",
+  "input": "artifacts/next_hypotheses/wave_1/scores.csv",
+  "feature_set": "interpretable_indicators",
+  "tolerance_bps": 25,
+  "horizons": [3, 5, 10],
+  "combinations": ["single_h10", "mean_scores", "minimum_score"],
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  }
+}

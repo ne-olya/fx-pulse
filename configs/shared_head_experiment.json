@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "combine the shared pooled score with a corridor-specific head",
+  "scores_input": "artifacts/next_hypotheses/wave_1/scores.csv",
+  "feature_set": "interpretable_indicators",
+  "tolerance_bps": 25,
+  "models": ["catboost", "xgboost"],
+  "horizons": [3, 5, 10],
+  "combinations": ["individual_only", "pooled_only", "balanced_mean", "agreement_min"],
+  "top_score_share": 0.4,
+  "lookback_observations": 60,
+  "minimum_history_observations": 20,
+  "cooldown_days": 3,
+  "weekly_cap": 2
+}
