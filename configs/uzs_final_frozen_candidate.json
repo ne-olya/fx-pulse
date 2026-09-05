@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "frozen_after_exploratory_selection",
+  "frozen_at": "2026-09-05",
+  "target_corridor": "UZS",
+  "horizon_trading_days": 5,
+  "evaluation_tolerance_bps": 25,
+  "feature_set": "uzs_national_plus_all_gdelt",
+  "model_variant": "catboost_tb_unweighted_3seed",
+  "policy": "dual_lane",
+  "primary_signal_tier": "strong_prediction",
+  "fallback_metric_status": "informational_touch_excluded_from_ml_signal_claim",
+  "training_window_years": 4,
+  "training_label": "triple_barrier_25_50_bps",
+  "seeds": [20260905, 20260919, 20260937],
+  "selection_note": "The preregistered logistic winner failed the late stability guard. This candidate was selected post-hoc from the development top 10 by the best worst-year same-week lift among candidates that stayed above 1.20 same-week lift on development and pseudo-holdout. It must now remain unchanged until future or bank-held data are available.",
+  "production_status": "research_candidate_not_validated_on_bank_execution_quotes"
+}

@@ -30,6 +30,12 @@
 | [docs/O_robust-innovation-results.md](docs/O_robust-innovation-results.md) | Перепроверка прежних победителей, 21 зафиксированный вариант и честный итог |
 | [docs/amd-feature-enrichment.md](docs/amd-feature-enrichment.md) | Абляция 305 рыночных признаков вокруг основного AMD h=5 кандидата |
 | [docs/uzs-enriched-autoresearch.md](docs/uzs-enriched-autoresearch.md) | Воспроизводимый UZS h=5 эксперимент, 94 локальных признака и 10 итераций авторесерча |
+| [docs/O_uzs-final-experiment-plan.md](docs/O_uzs-final-experiment-plan.md) | Заранее зафиксированный план финальной проверки UZS |
+| [docs/O_uzs-final-results.md](docs/O_uzs-final-results.md) | Итог UZS: выбранная модель, новости, защита от переобучения и клиентский путь |
+| [docs/O_best-model.md](docs/O_best-model.md) | Короткая карточка замороженной модели RUB→UZS |
+| [docs/persona-and-communication.md](docs/persona-and-communication.md) | Портрет отправителя, включая отдельную персону для Узбекистана |
+| [docs/push-texts.md](docs/push-texts.md) | Проверенные тексты пушей и запрещённые формулировки |
+| [docs/prototype/README.md](docs/prototype/README.md) | Кликабельный прототип клиентского пути и сценарий устаревшего сигнала |
 
 ## Данные
 
@@ -107,6 +113,8 @@ make brent-data && make brent-experiment
 make shared-head-experiment
 make conformal-abstention-experiment
 make target-rate-simulation
+make uzs-final-experiment        # 175 финальных UZS-комбинаций
+make uzs-final-selection         # воспроизвести frozen-выбор и robustness-аудит
 ```
 
 Панель загружается через `fxpulse.panel.load_panel`. Она физически исключает

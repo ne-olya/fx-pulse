@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-05T14:50:00+03:00",
+  "purpose": "final leakage-safe comparison for the RUB-to-UZS product corridor",
+  "inputs": {
+    "features": "artifacts/uzs_final_features_20260905/features.csv.gz",
+    "gdelt": "data/processed/gdelt_news_daily_features.csv",
+    "ai_gpr": "data/processed/ai_gpr_daily_features.csv",
+    "colleague_result": "docs/results/uzs-enriched-autoresearch.json"
+  },
+  "target_corridor": "UZS",
+  "corridors_for_confirmation": ["AMD", "KGS", "KZT", "TJS"],
+  "horizon": 5,
+  "evaluation_tolerance_bps": 25,
+  "development_years": [2022, 2023, 2024],
+  "pseudo_holdout_years": [2025, 2026],
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "training_start": "2018-01-01",
+  "rolling_training_years": 4,
+  "minimum_training_observations": 500,
+  "purge_observations": 5,
+  "feature_sets": [
+    "base_market",
+    "base_plus_liquidity",
+    "all_market_enrichment",
+    "uzs_national",
+    "uzs_national_plus_gdelt_russia",
+    "uzs_national_plus_gdelt_topics",
+    "uzs_national_plus_all_gdelt",
+    "uzs_national_plus_ai_gpr",
+    "uzs_national_plus_all_news",
+    "uzs_national_plus_regional_news",
+    "everything"
+  ],
+  "model_variants": [
+    "catboost_tb_unweighted_3seed",
+    "catboost_tb_balanced_3seed",
+    "catboost_regret_unweighted_3seed",
+    "xgboost_tb_3seed",
+    "logistic_tb"
+  ],
+  "full_feature_models": [
+    "catboost_tb_unweighted_3seed",
+    "catboost_tb_balanced_3seed",
+    "catboost_regret_unweighted_3seed"
+  ],
+  "control_models_on_uzs_national": ["xgboost_tb_3seed", "logistic_tb"],
+  "catboost": {
+    "iterations": 100,
+    "depth": 5,
+    "learning_rate": 0.04,
+    "l2_leaf_reg": 3.0
+  },
+  "xgboost": {
+    "iterations": 100,
+    "max_depth": 3,
+    "learning_rate": 0.05,
+    "min_child_weight": 15,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 5.0
+  },
+  "ensemble_seeds": [20260905, 20260919, 20260937],
+  "triple_barrier": {
+    "better_price_barrier_bps": 25,
+    "worse_price_barrier_bps": 50
+  },
+  "policies": [
+    "own_score",
+    "cross_corridor_mean",
+    "agreement_gate",
+    "selective_high_confidence",
+    "dual_lane"
+  ],
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "consensus": {
+    "rank_lookback": 60,
+    "rank_minimum_history": 20,
+    "own_weight": 0.5,
+    "other_weight": 0.5,
+    "minimum_other_positive_share": 0.75,
+    "maximum_other_rank_std": 0.3
+  },
+  "flexible_product_policy": {
+    "high_confidence_top_score_share": 0.2,
+    "fallback_top_score_share": 0.4,
+    "fallback_max_price_percentile_60": 0.4,
+    "fallback_weekdays": [3, 4],
+    "fallback_copy_must_be_informational": true
+  },
+  "robustness": {
+    "bootstrap_samples": 10000,
+    "moving_block_weeks": 4,
+    "placebo_samples": 2000,
+    "deoverlap_cooldown_days": 7,
+    "evaluation_tolerances_bps": [25, 50, 75]
+  },
+  "selection_rule": {
+    "primary_metric": "same_week_lift",
+    "choose_on_years": [2022, 2023, 2024],
+    "minimum_signals_per_week": 0.25,
+    "maximum_signals_per_week": 2.0,
+    "minimum_signals": 50,
+    "minimum_worst_year_same_week_lift": 1.0,
+    "tie_breakers": ["raw_lift", "lower_mean_regret_bps", "fewer_features"]
+  }
+}

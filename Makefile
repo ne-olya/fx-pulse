@@ -16,7 +16,7 @@ UNIVERSE_FROM ?= 2021-09-03
 UNIVERSE_TO ?= $(DATA_TO)
 SECIDS ?= CNYRUB_TOM USD000UTSTOM KZTRUB_TOM
 
-.PHONY: setup data experiment-data hourly-factor-data recipient-bank-data interest-data brent-data news-data news-data-daily news-features news-features-daily news-experiment news-robust-experiment ai-gpr-data ai-gpr-features ai-gpr-experiment ai-gpr-lag-sensitivity news-consensus-experiment news-risk-gate-experiment news-risk-gate-sensitivity news-bootstrap-check news-placebo-experiment news-liquidity-ablation liquidity-experiment experiment next-hypotheses adaptive-threshold recipient-leg-experiment hourly-factor-experiment regret-formulation-experiment multi-horizon-experiment temporal-sequence-experiment meta-labeling-experiment value-downside-experiment calendar-experiment holiday-experiment interest-rate-experiment regime-policy-experiment path-label-experiment garch-gate-experiment event-sampling-experiment ranking-experiment training-history-experiment technical-rule-experiment momentum-streak-experiment optimal-stopping-simulation brent-experiment shared-head-experiment conformal-abstention-experiment target-rate-simulation robust-innovation-experiment innovation-followup research-panel data-quality test backtest hypotheses hypotheses-data universe-data universe-data-all rule-selection interpretable-models local-minimum-models regret-benchmark boosting-calibration hybrid-targets dual-regret-policy
+.PHONY: setup data experiment-data hourly-factor-data recipient-bank-data interest-data brent-data news-data news-data-daily news-features news-features-daily news-experiment news-robust-experiment ai-gpr-data ai-gpr-features ai-gpr-experiment ai-gpr-lag-sensitivity news-consensus-experiment news-risk-gate-experiment news-risk-gate-sensitivity news-bootstrap-check news-placebo-experiment news-liquidity-ablation liquidity-experiment experiment next-hypotheses adaptive-threshold recipient-leg-experiment hourly-factor-experiment regret-formulation-experiment multi-horizon-experiment temporal-sequence-experiment meta-labeling-experiment value-downside-experiment calendar-experiment holiday-experiment interest-rate-experiment regime-policy-experiment path-label-experiment garch-gate-experiment event-sampling-experiment ranking-experiment training-history-experiment technical-rule-experiment momentum-streak-experiment optimal-stopping-simulation brent-experiment shared-head-experiment conformal-abstention-experiment target-rate-simulation robust-innovation-experiment innovation-followup uzs-final-experiment uzs-final-selection research-panel data-quality test backtest hypotheses hypotheses-data universe-data universe-data-all rule-selection interpretable-models local-minimum-models regret-benchmark boosting-calibration hybrid-targets dual-regret-policy
 
 setup:
 	$(UV) sync --all-groups
@@ -177,6 +177,12 @@ robust-innovation-experiment:
 
 innovation-followup:
 	$(PYTHON) -m fxpulse.innovation_followup --config configs/innovation_followup.json --artifact-dir artifacts/next_hypotheses/innovation_followup
+
+uzs-final-experiment:
+	$(PYTHON) -m fxpulse.uzs_final_experiment --config configs/uzs_final_experiment.json --artifact-dir artifacts/uzs_final_experiment_20260905
+
+uzs-final-selection:
+	$(PYTHON) -m fxpulse.uzs_final_selection --experiment-dir artifacts/uzs_final_experiment_20260905
 
 research-panel:
 	$(PYTHON) -m fxpulse.data.assemble
