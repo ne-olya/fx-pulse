@@ -58,6 +58,7 @@ h1{font-family:Manrope;font-size:25px;font-weight:800;letter-spacing:-.02em;marg
 .fxl{color:#8E8E93;font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
 .fxv{font-size:26px;font-weight:700;letter-spacing:-.5px;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
 .fxv .was{color:#8E8E93;text-decoration:line-through;font-size:16px;font-weight:400}
+.fxv .wasl{color:#8E8E93;font-size:12px;font-weight:400;align-self:center}
 .fxr{color:#8E8E93;font-size:13px;margin-top:6px}
 .lv{background:#1C1C1E;border-radius:16px;padding:14px 15px;margin-bottom:12px}
 .lvt{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:12px}
@@ -139,25 +140,25 @@ h1{font-family:Manrope;font-size:25px;font-weight:800;letter-spacing:-.02em;marg
     <div class="steps" id="steps"></div>
     <div class="note" id="note"></div>
     <div class="note">
-      <h3>Почему 35 000 ₽</h3>
-      <p>Не выдумана: <b>ЦБ РФ, средний перевод в Армению — 316 $</b>, то есть 23 280 ₽ по среднему курсу 2021 года (последний год со страновой разбивкой). С накопленной инфляцией Росстата за 2022–2026 (+44,6 %) — 33 700 ₽, округлено вверх до 35 000 ₽.</p>
+      <h3>Почему 45 000 ₽</h3>
+      <p>Не выдумана: <b>ЦБ РФ, средний перевод в Узбекистан — 410 $</b>, то есть 30 205 ₽ по среднему курсу 2021 года (последний год со страновой разбивкой). С накопленной инфляцией Росстата за 2022–2026 (+44,6 %) — 43 681 ₽, округлено вверх до 45 000 ₽.</p>
       <p>Проверка: то же вычисление по всем пяти коридорам, взвешенное по числу операций, даёт 24 500 ₽ против <b>22 000 ₽ у ВТБ за 2025 год</b> по всем направлениям. Расхождение 11 % — пересчёт сходится.</p>
-      <p>Округляем вверх намеренно: клиент проверяет расчёт в уме, а сумма в валюте получателя должна ощущаться. 35 000 ₽ — это <b>60 % месячной зарплаты в Армении</b>.</p>
-      <p>У клиента с историей переводов подставляется его собственная сумма. 35 000 ₽ — значение по умолчанию для коридора без истории.</p>
-      <p>Курс исполнения из приложения: 100 AMD = 25,94 ₽. Не курс ЦБ — по нему клиент реально переводит.</p>
+      <p>Округляем вверх намеренно: клиент проверяет расчёт в уме, а сумма в валюте получателя должна ощущаться. 45 000 ₽ — это <b>88 % месячной зарплаты в Узбекистане</b>.</p>
+      <p>У клиента с историей переводов подставляется его собственная сумма. 45 000 ₽ — значение по умолчанию для коридора без истории.</p>
+      <p>Курс исполнения: <b>1 000 сум = 7,99 ₽</b>. Это курс ЦБ, ухудшенный на измеренный спред приложения 8,9 %. ⬜ Спред мерили на армянском коридоре по скриншоту; для узбекского нужен свой замер.</p>
     </div>
   </div>
 </div>
 </div>
 
 <script>
-var late=false, scr='nc', meth='phone', amount=35000, kb=false, target=0, rcpt=0, rl=false;
+var late=false, scr='nc', meth='phone', amount=45000, kb=false, target=0, rcpt=0, rl=false;
 var $=function(i){return document.getElementById(i)};
 var F=function(n){return n.toLocaleString('ru-RU')};
-var RUB=35000, R_OK=0.2594, R_LATE=0.2620;
-function amd(r,rub){return Math.round((rub||RUB)/r)}
+var RUB=45000, R_OK=0.0079924, R_LATE=0.0080723;
+function uzs(r,rub){return Math.round((rub||RUB)/r)}
 function rate(){return late?R_LATE:R_OK}
-var GOT_OK=Math.round(35000/R_OK), MONTH=4200;
+var GOT_OK=Math.round(45000/R_OK), MONTH=67500;
 
 var ic={
  home:'<svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" fill="currentColor"/></svg>',
@@ -197,9 +198,9 @@ function tabs(){
 }
 function nav(t,b){return '<div class="nav">'+(b?'<span class="bk" onclick="go(\''+b+'\')">'+ic.back+'</span>':'')+t+'</div>'}
 var RCPT=[
- {n:'Арам А.', r:'+374 ·· ··· ···', m:'phone', c:'#2C5FE0', last:'перевод 12 августа'},
- {n:'Нарине С.', r:'Карта ···· 0000', m:'card', c:'#7A3FD1', last:'перевод 3 августа'},
- {n:'Гурген М.', r:'Счёт ·· 0000', m:'acc', c:'#1F7A5A', last:'перевод 27 июля'}
+ {n:'Шухрат А.', r:'+998 ·· ··· ····', m:'phone', c:'#2C5FE0', last:'перевод 12 августа · 45 000 ₽'},
+ {n:'Дилноза К.', r:'Карта ···· 0000', m:'card', c:'#7A3FD1', last:'перевод 3 августа · 20 000 ₽'},
+ {n:'Бекзод М.', r:'Счёт ·· 0000', m:'acc', c:'#1F7A5A', last:'перевод 27 июля · 60 000 ₽'}
 ];
 function acct(){
   var R=RCPT[rcpt];
@@ -233,13 +234,13 @@ function levelBar(){
 function fxBlock(){
   var a=got(null,R_OK), b=got(null,R_LATE), d=a-b;
   if(!late) return '<div class="fx"><div class="fxl">Получатель получит</div>'+
-   '<div class="fxv">'+F(a)+' ֏</div>'+
-   '<div class="fxr">100 AMD = 25,94 ₽</div>'+
-   '<div class="fxf"><span class="dt"></span><span>На '+F(Math.round(MONTH*amount/35000))+' драмов больше, чем месяц назад</span></div></div>';
+   '<div class="fxv">'+F(a)+' сум</div>'+
+   '<div class="fxr">1 000 сум = 7,99 ₽</div>'+
+   '<div class="fxf"><span class="dt"></span><span>На '+F(Math.round(MONTH*amount/45000))+' сумов больше, чем месяц назад</span></div></div>';
   return '<div class="fx w"><div class="fxl">Получатель получит</div>'+
-   '<div class="fxv">'+F(b)+' ֏<span class="was">'+F(a)+' ֏</span></div>'+
-   '<div class="fxr">100 AMD = 26,20 ₽</div>'+
-   '<div class="fxf"><span class="dt o"></span><span>Курс меняется в течение дня</span></div></div>';
+   '<div class="fxv">'+F(b)+' сум<span class="was">'+F(a)+' сум</span><span class="wasl">в уведомлении</span></div>'+
+   '<div class="fxr">1 000 сум = 8,07 ₽</div>'+
+   '<div class="fxf"><span class="dt o"></span><span>Курс меняется постоянно</span></div></div>';
 }
 
 var S={};
@@ -255,18 +256,18 @@ S.nc=function(){
   '<div class="nch"><h3>Центр уведомлений</h3><div class="ncx">'+ic.x+'</div></div><div class="nl">'+
   '<div class="nt" onclick="go(\'methods\')"><div class="ni">A</div><div class="nb">'+
   '<div class="ntop"><b>Альфа-Банк</b><span>сейчас</span></div>'+
-  '<div class="ntt">За 35 000 ₽ дойдёт '+F(GOT_OK)+' драм</div>'+
-  '<div class="ntx">На '+F(MONTH)+' больше, чем месяц назад</div>'+
+  '<div class="ntt">За 45 000 ₽ дойдёт '+F(GOT_OK)+' сум</div>'+
+  '<div class="ntx">За месяц стало на '+F(MONTH)+' больше</div>'+
   '</div></div><div class="tap">Нажмите на уведомление</div></div><div class="hbar"></div></div>';
 };
 
 S.methods=function(){
   var r=rate();
-  return STAT+nav('Перевод в Армению','nc')+'<div class="body">'+
+  return STAT+nav('Перевод в Узбекистан','nc')+'<div class="body">'+
   ['phone','card','acc'].map(function(k){var M=METH[k];
    return '<div class="mth" onclick="pick(\''+k+'\')"><div class="txt">'+
    '<h4>'+M.t+'</h4><div class="g">'+M.d+'<br>'+M.fee+'</div>'+
-   '<div class="got">Дойдёт '+F(got(k,r))+' ֏</div>'+
+   '<div class="got">Дойдёт '+F(got(k,r))+' сум</div>'+
    (M.pill?'<div class="pill">'+M.pill+'</div>':'')+
    '</div><div class="ic" style="background:#2C2C2E">'+ic[k==='phone'?'phone':k==='card'?'card':'acct']+'</div></div>'}).join('')+
   '<div class="hint">Для перевода '+F(amount)+' ₽</div></div>'+tabs();
@@ -303,16 +304,16 @@ S.transfer=function(){
 };
 
 S.wait=function(){
-  if(!target) target=Math.round(got(null,R_OK)/100)*100;
+  if(!target) target=Math.round(got(null,R_OK)/10000)*10000;
   return STAT+nav('Сообщить о курсе','transfer')+'<div class="body">'+
   '<div class="c" style="text-align:center;padding:22px 15px">'+
   '<div class="g" style="font-size:14px;margin-bottom:12px">Сообщить, когда за '+F(amount)+' ₽ будет доходить</div>'+
   '<div style="display:flex;align-items:center;justify-content:center;gap:18px">'+
-  '<div onclick="tgt(-100)" style="width:42px;height:42px;border-radius:50%;background:#2C2C2E;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer">−</div>'+
-  '<div style="font-size:30px;font-weight:700;letter-spacing:-.6px;min-width:130px">'+F(target)+' ֏</div>'+
-  '<div onclick="tgt(100)" style="width:42px;height:42px;border-radius:50%;background:#2C2C2E;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer">+</div>'+
+  '<div onclick="tgt(-10000)" style="width:42px;height:42px;border-radius:50%;background:#2C2C2E;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer">−</div>'+
+  '<div style="font-size:30px;font-weight:700;letter-spacing:-.6px;min-width:130px">'+F(target)+' сум</div>'+
+  '<div onclick="tgt(10000)" style="width:42px;height:42px;border-radius:50%;background:#2C2C2E;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer">+</div>'+
   '</div></div>'+
-  '<div class="hint">Сейчас доходит '+F(got())+' ֏. Перевод не создан — только напоминание</div>'+
+  '<div class="hint">Сейчас доходит '+F(got())+' сум. Перевод не создан — только напоминание</div>'+
   '<div class="btn" onclick="go(\'set\')">Сообщить при таком курсе</div>'+
   '<div class="btn gh" onclick="go(\'transfer\')">Назад</div></div>'+tabs();
 };
@@ -320,7 +321,7 @@ S.set=function(){
   return STAT+nav('','transfer')+'<div class="body" style="padding-top:74px;text-align:center">'+
   '<div style="width:74px;height:74px;border-radius:20px;background:#1C1C1E;display:flex;align-items:center;justify-content:center;margin:0 auto 22px">'+ic.bell+'</div>'+
   '<div style="font-size:22px;font-weight:700;margin-bottom:9px">Напоминание включено</div>'+
-  '<div class="g" style="font-size:15px;line-height:1.4;max-width:250px;margin:0 auto 28px">Сообщим, когда за '+F(amount)+' ₽ будет доходить '+F(target)+' ֏</div>'+
+  '<div class="g" style="font-size:15px;line-height:1.4;max-width:250px;margin:0 auto 28px">Сообщим, когда за '+F(amount)+' ₽ будет доходить '+F(target)+' сум</div>'+
   '<div class="btn gh" onclick="go(\'transfer\')">К переводу</div></div>'+tabs();
 };
 
@@ -329,11 +330,11 @@ S.done=function(){
   return STAT+nav('','methods')+'<div class="body" style="padding-top:56px;text-align:center">'+
   '<div style="width:74px;height:74px;border-radius:50%;background:#0A84FF;display:flex;align-items:center;justify-content:center;margin:0 auto 22px">'+ic.ok+'</div>'+
   '<div style="font-size:22px;font-weight:700;margin-bottom:8px">Отправлено</div>'+
-  '<div class="g" style="font-size:15px;margin-bottom:24px">'+RCPT[rcpt].n+' получит '+F(got())+' ֏</div>'+
+  '<div class="g" style="font-size:15px;margin-bottom:24px">'+RCPT[rcpt].n+' получит '+F(got())+' сум</div>'+
   '<div class="c" style="text-align:left">'+
   '<div class="row" style="justify-content:space-between"><span class="g">Сумма</span><span>'+F(amount)+' ₽</span></div><div class="sep"></div>'+
   '<div class="row" style="justify-content:space-between"><span class="g">Способ</span><span>'+M.n+'</span></div><div class="sep"></div>'+
-  '<div class="row" style="justify-content:space-between"><span class="g">Курс</span><span>100 AMD = '+(r*100).toFixed(2).replace('.',',')+' ₽</span></div><div class="sep"></div>'+
+  '<div class="row" style="justify-content:space-between"><span class="g">Курс</span><span>1 000 сум = '+(r*1000).toFixed(2).replace('.',',')+' ₽</span></div><div class="sep"></div>'+
   '<div class="row" style="justify-content:space-between"><span class="g">Комиссия</span><span>'+(M.f?F(Math.round(amount*M.f))+' ₽':'Нет')+'</span></div></div>'+
   '<div class="btn gh" onclick="go(\'nc\')">Готово</div></div>'+tabs();
 };
@@ -371,6 +372,6 @@ function render(){
 }
 $('bOk').onclick=function(){late=false;render()};
 $('bLate').onclick=function(){late=true;if(scr==='nc'){scr='transfer'}render()};
-$('bReset').onclick=function(){late=false;scr='nc';meth='phone';amount=35000;kb=false;target=0;rcpt=0;rl=false;render()};
+$('bReset').onclick=function(){late=false;scr='nc';meth='phone';amount=45000;kb=false;target=0;rcpt=0;rl=false;render()};
 render();
 </script>
