@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-05T02:12:00+03:00",
+  "source_name": "Iacoviello and Tong AI-GPR Index",
+  "source_page": "https://www.matteoiacoviello.com/ai_gpr.html",
+  "date_from": "2018-01-01",
+  "daily_availability_lag_days": 7,
+  "monthly_availability_day_after_month_end": 7,
+  "daily_columns": {
+    "gpr_ai": "GPR_AI",
+    "keyword_gpr": "GPR_AER",
+    "oil_gpr": "GPR_OIL",
+    "non_oil_gpr": "GPR_NONOIL",
+    "threats_gpr": "THREATS_GPR_AI",
+    "acts_gpr": "ACTS_GPR_AI",
+    "russia_oil_gpr": "GPR_OIL_Russia"
+  },
+  "corridor_countries": {
+    "AMD": "Armenia",
+    "KGS": "Kyrgyzstan",
+    "KZT": "Kazakhstan",
+    "TJS": "Tajikistan",
+    "UZS": "Uzbekistan"
+  },
+  "urls": {
+    "daily": "https://www.matteoiacoviello.com/ai_gpr_files/ai_gpr_data_daily.csv",
+    "country_monthly": "https://www.matteoiacoviello.com/ai_gpr_files/ai_gpr_country_monthly.csv",
+    "bilateral_monthly": "https://www.matteoiacoviello.com/ai_gpr_files/ai_gpr_bilateral_monthly.csv"
+  },
+  "raw_files": {
+    "daily": "data/raw/ai_gpr/ai_gpr_data_daily.csv",
+    "country_monthly": "data/raw/ai_gpr/ai_gpr_country_monthly.csv",
+    "bilateral_monthly": "data/raw/ai_gpr/ai_gpr_bilateral_monthly.csv"
+  },
+  "output": "data/processed/ai_gpr_daily_features.csv"
+}

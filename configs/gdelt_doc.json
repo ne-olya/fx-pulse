@@ -5,9 +5,11 @@
   "source": "GDELT DOC 2.0 TimelineVolRaw",
   "date_from": "2018-01-01",
   "date_to": "2026-09-02",
-  "request_interval_seconds": 30,
+  "request_interval_seconds": 45,
   "request_timeout_seconds": 180,
-  "maximum_attempts": 7,
+  "maximum_attempts": 20,
+  "years_per_request": 10,
+  "fallback_proxy_prefix": "https://r.jina.ai/http://",
   "queries": {
     "russia": "Russia",
     "sanctions": "(Russia OR Russian) (sanction OR sanctions)",
@@ -25,6 +27,10 @@
     "KZT": "kzt",
     "TJS": "tjs",
     "UZS": "uzs"
+  },
+  "corridor_additional_series": {},
+  "dropped_queries": {
+    "recipient_currency_policy": "removed before modeling after the public API rejected the Kyrgyzstan macro query for more than 20 minutes; recipient monetary-policy risk is tested separately with AI-GPR"
   },
   "rolling_windows_days": [1, 3, 7],
   "shock_window_days": 30,

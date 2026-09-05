@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-05T04:45:00+03:00",
+  "source": "GDELT DOC 2.0 TimelineVolRaw; contingency subset with four complete recipients",
+  "date_from": "2018-01-01",
+  "date_to": "2026-09-02",
+  "queries": {
+    "russia": "Russia",
+    "sanctions": "(Russia OR Russian) (sanction OR sanctions)",
+    "currency": "(Russia OR Russian) (ruble OR rouble OR currency OR \"central bank\")",
+    "energy": "(Russia OR Russian) (oil OR gas OR energy)",
+    "amd": "Armenia",
+    "kgs": "Kyrgyzstan",
+    "kzt": "Kazakhstan",
+    "tjs": "Tajikistan"
+  },
+  "corridor_series": {"AMD": "amd", "KGS": "kgs", "KZT": "kzt", "TJS": "tjs"},
+  "corridor_additional_series": {},
+  "rolling_windows_days": [1, 3, 7],
+  "shock_window_days": 30,
+  "availability_lag_days": 1
+}

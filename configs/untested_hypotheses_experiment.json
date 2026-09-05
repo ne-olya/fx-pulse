@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-05T00:00:00+03:00",
+  "purpose": "paired exploratory test of U01/U02/U03/U05/U07/U08/U09 from UNTESTED_HYPOTHESES.md",
+  "input": "data/processed/cbr_corridor_features_with_liquidity_2010_2026.csv",
+  "hourly_input": "data/raw/moex_cets_factors_60m.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "horizons": [3, 5, 10],
+  "evaluation_tolerance_bps": 25,
+  "test_from": "2022-01-01",
+  "test_to": "2026-09-03",
+  "fold_frequency_months": 6,
+  "rolling_training_years": 4,
+  "short_training_years": 2,
+  "minimum_training_observations": 450,
+  "model": "catboost",
+  "model_iterations": 60,
+  "ensemble_seeds": [20260905, 20260929],
+  "feature_prefixes": ["base__", "leg__", "regime__", "market__", "indicator__", "liquidity__"],
+  "triple_barrier": {
+    "better_price_barrier_bps": 25,
+    "worse_price_barrier_bps": 50
+  },
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "u01": {
+    "time_feature": "hazard__step"
+  },
+  "u02": {
+    "secid": "CNYRUB_TOM",
+    "alignment_carry_days": 3
+  },
+  "u03": {
+    "detector_delta": 0.01,
+    "minimum_subwindow": 40,
+    "maximum_window": 252,
+    "alarm_hold_observations": 60
+  },
+  "u05": {
+    "assets": ["gold", "silver", "imoex", "rtsi"],
+    "rolling_window": 252,
+    "minimum_observations": 126
+  },
+  "u07": {
+    "simulation_paths": 500,
+    "history_observations": 1000,
+    "volatility_scale_bounds": [0.5, 2.0],
+    "variants": ["u07_bootstrap_zero_drift", "u07_bootstrap_historical_drift"]
+  },
+  "u08": {
+    "calibration_observations": 252,
+    "minimum_calibration_observations": 40,
+    "nearest_scores": 60,
+    "maximum_regret_bps": 100,
+    "quantiles": [0.7, 0.8]
+  },
+  "u09": {
+    "eta": 0.5,
+    "outer_iterations": 8,
+    "volatility_cut": 0.67,
+    "variants": ["u09_pooled_logistic", "u09_group_dro"]
+  },
+  "bootstrap_samples": 1000,
+  "bootstrap_block_weeks": 8,
+  "random_seed": 20260905,
+  "success_gate": {
+    "primary_horizon": 5,
+    "minimum_median_corridor_delta_same_week_lift": 0.03,
+    "minimum_positive_corridors": 3,
+    "minimum_positive_fold_fraction": 0.6666667,
+    "minimum_signals_per_week": 1.0,
+    "maximum_signals_per_week": 2.0,
+    "maximum_worst_annual_corridor_delta": -0.05
+  }
+}

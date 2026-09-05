@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "status": "registered_after_partial4_before_liquidity_ablation_results",
+  "registered_at": "2026-09-05T05:25:00+03:00",
+  "purpose": "isolate whether GDELT news adds value after MOEX trading activity is already present",
+  "input": "data/processed/cbr_corridor_features_with_liquidity_2010_2026.csv",
+  "news_input": "data/processed/gdelt_news_daily_features_partial4.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS"],
+  "feature_sets": [
+    "market_only",
+    "plus_liquidity",
+    "plus_all_news",
+    "plus_liquidity_all_news"
+  ],
+  "horizons": [5],
+  "evaluation_tolerance_bps": 25,
+  "training_start": "2018-01-01",
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "rolling_training_years": 4,
+  "minimum_training_observations": 500,
+  "model": "catboost",
+  "model_iterations": 80,
+  "ensemble_seeds": [20260905, 20260919, 20260937],
+  "training_label": "triple_barrier",
+  "triple_barrier": {"better_price_barrier_bps": 25, "worse_price_barrier_bps": 50},
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "pseudo_holdout_years": [2025, 2026],
+  "interpretation": "post-hoc focused ablation; news must beat the otherwise identical liquidity model"
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-05T13:05:00+03:00",
+  "purpose": "paired exploratory tests of U10 futures curve and U13 external-FX representation",
+  "input": "data/processed/cbr_corridor_features_with_liquidity_2010_2026.csv",
+  "hourly_input": "data/raw/moex_cets_factors_60m.csv",
+  "futures_input": "data/raw/moex_cny_futures_daily.csv",
+  "bis_donors_input": "data/processed/bis_fx_donors_daily.csv",
+  "baseline_scores": "artifacts/untested_hypotheses/data_ready/scores.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "horizons": [3, 5, 10],
+  "evaluation_tolerance_bps": 25,
+  "test_from": "2022-01-01",
+  "test_to": "2026-09-03",
+  "fold_frequency_months": 6,
+  "rolling_training_years": 4,
+  "minimum_training_observations": 450,
+  "model": "catboost",
+  "model_iterations": 60,
+  "ensemble_seeds": [20260905, 20260929],
+  "feature_prefixes": ["base__", "leg__", "regime__", "market__", "indicator__", "liquidity__"],
+  "triple_barrier": {"better_price_barrier_bps": 25, "worse_price_barrier_bps": 50},
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "u10": {
+    "minimum_days_to_expiry": 7,
+    "maximum_near_days_to_expiry": 120,
+    "maximum_far_days_to_expiry": 240,
+    "minimum_complete_training_observations": 126,
+    "alignment_carry_days": 3
+  },
+  "u13": {
+    "shape_window": 20,
+    "pca_components": 5,
+    "donor_publication_lag_days": 7,
+    "donor_subsample_step": 5
+  },
+  "bootstrap_samples": 1000,
+  "bootstrap_block_weeks": 8,
+  "random_seed": 20260905,
+  "success_gate": {
+    "primary_horizon": 5,
+    "minimum_median_corridor_delta_same_week_lift": 0.03,
+    "minimum_positive_corridors": 3,
+    "minimum_positive_fold_fraction": 0.6666667,
+    "minimum_signals_per_week": 1.0,
+    "maximum_signals_per_week": 2.0,
+    "maximum_worst_annual_corridor_delta": -0.05
+  }
+}

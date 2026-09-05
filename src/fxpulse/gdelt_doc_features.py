@@ -42,6 +42,8 @@ def build_features(raw: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
     dates = pd.date_range(data["date"].min(), data["date"].max(), freq="D")
     counts = data.pivot(index="date", columns="series", values="article_count").reindex(dates)
     shares = data.pivot(index="date", columns="series", values="article_share").reindex(dates)
+    norms = data.pivot(index="date", columns="series", values="all_article_count").reindex(dates)
+    source_observed = norms.notna().any(axis=1)
     lag = int(config["availability_lag_days"])
     windows = [int(value) for value in config["rolling_windows_days"]]
     shock_window = int(config["shock_window_days"])
@@ -50,9 +52,21 @@ def build_features(raw: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
     for corridor, recipient in config["corridor_series"].items():
         result = pd.DataFrame({"feature_date": dates + pd.Timedelta(lag, unit="D")})
         result["corridor"] = corridor
-        for series in [*shared, recipient]:
-            short = "recipient" if series == recipient else series
-            count = counts[series].fillna(0.0)
+        result["news__source_missing"] = (~source_observed).astype(float).to_numpy()
+        for window in windows:
+            result[f"news__source_coverage_{window}d"] = (
+                source_observed.astype(float).rolling(window, min_periods=1).mean().to_numpy()
+            )
+        configured = [(series, series) for series in shared]
+        configured.append(("recipient", recipient))
+        configured.extend(
+            (short, series)
+            for short, series in config.get("corridor_additional_series", {}).get(corridor, {}).items()
+        )
+        for short, series in configured:
+            # A missing query row on an otherwise observed date means zero matches.
+            # A date absent from every query is a GDELT outage and must stay unknown.
+            count = counts[series].fillna(0.0).where(source_observed)
             share = shares[series]
             result[f"news__{short}_count"] = count.to_numpy()
             result[f"news__{short}_share"] = share.to_numpy()
@@ -66,6 +80,30 @@ def build_features(raw: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
             result[f"news__{short}_share_zscore_{shock_window}d"] = _past_zscore(
                 share, shock_window
             ).to_numpy()
+
+        recipient_count_shock = result[f"news__recipient_count_zscore_{shock_window}d"]
+        recipient_share_shock = result[f"news__recipient_share_zscore_{shock_window}d"]
+        russia_count_shock = result[f"news__russia_count_zscore_{shock_window}d"]
+        russia_share_shock = result[f"news__russia_share_zscore_{shock_window}d"]
+        result[f"news__cross_country_count_shock_gap_{shock_window}d"] = (
+            russia_count_shock - recipient_count_shock
+        )
+        result[f"news__cross_country_share_shock_gap_{shock_window}d"] = (
+            russia_share_shock - recipient_share_shock
+        )
+        result[f"news__cross_country_joint_positive_shock_{shock_window}d"] = (
+            russia_count_shock.clip(lower=0) * recipient_count_shock.clip(lower=0)
+        )
+        if f"news__recipient_macro_count_zscore_{shock_window}d" in result:
+            result[f"news__cross_macro_shock_gap_{shock_window}d"] = (
+                result[f"news__currency_count_zscore_{shock_window}d"]
+                - result[f"news__recipient_macro_count_zscore_{shock_window}d"]
+            )
+            comparison_window = max(windows)
+            result[f"news__cross_recipient_macro_share_{comparison_window}d"] = (
+                result[f"news__recipient_macro_count_{comparison_window}d"]
+                / result[f"news__recipient_count_{comparison_window}d"].replace(0, np.nan)
+            )
         outputs.append(result)
     return pd.concat(outputs, ignore_index=True).replace([np.inf, -np.inf], np.nan)
 

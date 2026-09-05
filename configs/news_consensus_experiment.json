@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "status": "registered_after_ai_gpr_before_consensus_results",
+  "registered_at": "2026-09-05T02:35:00+03:00",
+  "purpose": "test whether the news score is safer when the other four recipient currencies agree",
+  "parent_scores": "artifacts/next_hypotheses/ai_gpr/oot_scores.csv.gz",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "horizons": [3, 5, 10],
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "source_feature_sets": ["market_only", "plus_all_ai_gpr", "plus_liquidity_all_ai_gpr"],
+  "feature_sets": [
+    "market_rank",
+    "ai_gpr_own_rank",
+    "ai_gpr_peer25",
+    "ai_gpr_peer50",
+    "liquidity_ai_gpr_own_rank",
+    "liquidity_ai_gpr_peer25"
+  ],
+  "causal_rank_lookback": 60,
+  "minimum_rank_history": 20,
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "pseudo_holdout_years": [2025, 2026],
+  "interpretation": "post-hoc ensemble test; peers use scores only, never their future labels"
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "status": "registered_after_gate_before_sensitivity_results",
+  "registered_at": "2026-09-05T03:05:00+03:00",
+  "purpose": "verify that the global-or-Russia-oil news gate is not dependent on exactly one z-score threshold",
+  "parent_scores": "artifacts/next_hypotheses/ai_gpr/oot_scores.csv.gz",
+  "parent_signals": "artifacts/next_hypotheses/ai_gpr/signals.csv",
+  "external_feature_input": "data/processed/ai_gpr_daily_features.csv",
+  "source_feature_set": "market_only",
+  "thresholds": [0.5, 1.0, 1.5, 2.0],
+  "global_feature": "aigpr__daily_gpr_ai_zscore_90d",
+  "oil_feature": "aigpr__daily_russia_oil_gpr_zscore_90d",
+  "pseudo_holdout_years": [2025, 2026],
+  "interpretation": "post-hoc robustness curve; all thresholds are reported and none is promoted as confirmatory"
+}

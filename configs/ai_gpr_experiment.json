@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-05T02:12:00+03:00",
+  "purpose": "test a new LLM-derived geopolitical news index as a reproducible alternative to raw news scraping",
+  "input": "data/processed/cbr_corridor_features_with_liquidity_2010_2026.csv",
+  "external_feature_input": "data/processed/ai_gpr_daily_features.csv",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "feature_sets": [
+    "market_only",
+    "plus_daily_ai_gpr",
+    "plus_country_ai_gpr",
+    "plus_bilateral_ai_gpr",
+    "plus_all_ai_gpr",
+    "plus_liquidity_all_ai_gpr"
+  ],
+  "horizons": [3, 5, 10],
+  "evaluation_tolerance_bps": 25,
+  "training_start": "2018-01-01",
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "rolling_training_years": 4,
+  "minimum_training_observations": 500,
+  "model": "catboost",
+  "model_iterations": 80,
+  "ensemble_seeds": [20260905, 20260919, 20260937],
+  "training_label": "triple_barrier",
+  "triple_barrier": {
+    "better_price_barrier_bps": 25,
+    "worse_price_barrier_bps": 50
+  },
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "nested_selection": {
+    "first_selection_year": 2023,
+    "minimum_past_signals": 20,
+    "metric": "lift_vs_matched_random",
+    "fallback_feature_set": "market_only"
+  },
+  "pseudo_holdout_years": [2025, 2026],
+  "promotion_rule": {
+    "primary_feature_set": "plus_all_ai_gpr",
+    "minimum_positive_same_week_slices_out_of_15": 9,
+    "minimum_positive_aggregate_horizons_out_of_3": 2,
+    "minimum_signals_per_week": 0.8,
+    "require_nonnegative_pseudo_holdout_delta": true
+  },
+  "known_limitations": [
+    "AI-GPR was constructed retrospectively in 2026, so historical real-time vintages do not exist",
+    "daily values are delayed seven days and monthly values until seven days after month end",
+    "historical revisions can still differ from values that a live pipeline would have produced"
+  ]
+}

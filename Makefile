@@ -16,7 +16,7 @@ UNIVERSE_FROM ?= 2021-09-03
 UNIVERSE_TO ?= $(DATA_TO)
 SECIDS ?= CNYRUB_TOM USD000UTSTOM KZTRUB_TOM
 
-.PHONY: setup data experiment-data hourly-factor-data recipient-bank-data interest-data brent-data news-data news-data-daily news-features news-features-daily news-experiment liquidity-experiment experiment next-hypotheses adaptive-threshold recipient-leg-experiment hourly-factor-experiment regret-formulation-experiment multi-horizon-experiment temporal-sequence-experiment meta-labeling-experiment value-downside-experiment calendar-experiment holiday-experiment interest-rate-experiment regime-policy-experiment path-label-experiment garch-gate-experiment event-sampling-experiment ranking-experiment training-history-experiment technical-rule-experiment momentum-streak-experiment optimal-stopping-simulation brent-experiment shared-head-experiment conformal-abstention-experiment target-rate-simulation robust-innovation-experiment innovation-followup research-panel data-quality test backtest hypotheses hypotheses-data universe-data universe-data-all rule-selection interpretable-models local-minimum-models regret-benchmark boosting-calibration hybrid-targets dual-regret-policy
+.PHONY: setup data experiment-data hourly-factor-data recipient-bank-data interest-data brent-data news-data news-data-daily news-features news-features-daily news-experiment news-robust-experiment ai-gpr-data ai-gpr-features ai-gpr-experiment ai-gpr-lag-sensitivity news-consensus-experiment news-risk-gate-experiment news-risk-gate-sensitivity news-bootstrap-check news-placebo-experiment news-liquidity-ablation liquidity-experiment experiment next-hypotheses adaptive-threshold recipient-leg-experiment hourly-factor-experiment regret-formulation-experiment multi-horizon-experiment temporal-sequence-experiment meta-labeling-experiment value-downside-experiment calendar-experiment holiday-experiment interest-rate-experiment regime-policy-experiment path-label-experiment garch-gate-experiment event-sampling-experiment ranking-experiment training-history-experiment technical-rule-experiment momentum-streak-experiment optimal-stopping-simulation brent-experiment shared-head-experiment conformal-abstention-experiment target-rate-simulation robust-innovation-experiment innovation-followup research-panel data-quality test backtest hypotheses hypotheses-data universe-data universe-data-all rule-selection interpretable-models local-minimum-models regret-benchmark boosting-calibration hybrid-targets dual-regret-policy
 
 setup:
 	$(UV) sync --all-groups
@@ -57,6 +57,39 @@ news-features-daily:
 
 news-experiment:
 	$(PYTHON) -m fxpulse.news_experiment
+
+news-robust-experiment:
+	$(PYTHON) -m fxpulse.news_robust_experiment
+
+ai-gpr-data:
+	$(PYTHON) -m fxpulse.data.ai_gpr
+
+ai-gpr-features:
+	$(PYTHON) -m fxpulse.ai_gpr_features
+
+ai-gpr-experiment:
+	$(PYTHON) -m fxpulse.ai_gpr_experiment
+
+ai-gpr-lag-sensitivity:
+	$(PYTHON) -m fxpulse.ai_gpr_lag_sensitivity
+
+news-consensus-experiment:
+	$(PYTHON) -m fxpulse.news_consensus_experiment
+
+news-risk-gate-experiment:
+	$(PYTHON) -m fxpulse.news_risk_gate_experiment
+
+news-risk-gate-sensitivity:
+	$(PYTHON) -m fxpulse.news_risk_gate_sensitivity
+
+news-bootstrap-check:
+	$(PYTHON) -m fxpulse.news_bootstrap_check
+
+news-placebo-experiment:
+	$(PYTHON) -m fxpulse.news_placebo_experiment
+
+news-liquidity-ablation:
+	$(PYTHON) -m fxpulse.news_liquidity_ablation
 
 liquidity-experiment:
 	$(PYTHON) -m fxpulse.liquidity_experiment

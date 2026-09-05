@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "status": "registered_after_partial_gdelt_before_bootstrap_results",
+  "registered_at": "2026-09-05T03:45:00+03:00",
+  "purpose": "quantify whether the h=5 GDELT same-week lift increment survives four-week block resampling",
+  "scores": "artifacts/next_hypotheses/news_robust_partial/oot_scores.csv.gz",
+  "signals": "artifacts/next_hypotheses/news_robust_partial/signals.csv",
+  "baseline": "market_only",
+  "candidates": ["plus_all_news", "plus_russia_levels"],
+  "horizon": 5,
+  "samples": 20000,
+  "block_weeks": 4,
+  "random_seed": 20260905,
+  "previous_aggregate_news_trials": 36,
+  "interpretation": "post-hoc robustness check; selection-adjusted interval accounts for 12 feature sets by 3 horizons"
+}

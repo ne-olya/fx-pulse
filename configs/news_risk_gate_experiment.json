@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "registered_after_ai_gpr_before_gate_results",
+  "registered_at": "2026-09-05T03:00:00+03:00",
+  "purpose": "test the interpretable product rule of suppressing otherwise good market signals during a large news-risk shock",
+  "parent_scores": "artifacts/next_hypotheses/ai_gpr/oot_scores.csv.gz",
+  "parent_signals": "artifacts/next_hypotheses/ai_gpr/signals.csv",
+  "external_feature_input": "data/processed/ai_gpr_daily_features.csv",
+  "source_feature_set": "market_only",
+  "variants": [
+    "market_no_gate",
+    "exclude_global_gpr_gt1",
+    "exclude_oil_gpr_gt1",
+    "exclude_global_or_oil_gt1",
+    "global_gpr_gt1_only"
+  ],
+  "shock_zscore_threshold": 1.0,
+  "global_feature": "aigpr__daily_gpr_ai_zscore_90d",
+  "oil_feature": "aigpr__daily_russia_oil_gpr_zscore_90d",
+  "pseudo_holdout_years": [2025, 2026],
+  "interpretation": "post-hoc exploratory safety gate; variants and the fixed one-standard-deviation threshold were written before gate results"
+}

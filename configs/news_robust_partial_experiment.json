@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-05T03:15:00+03:00",
+  "purpose": "contingency GDELT ablation on the three fully downloaded recipient countries",
+  "input": "data/processed/cbr_corridor_features_with_liquidity_2010_2026.csv",
+  "news_input": "data/processed/gdelt_news_daily_features_partial.csv",
+  "corridors": ["AMD", "KGS", "KZT"],
+  "feature_sets": [
+    "market_only",
+    "news_only",
+    "plus_russia_levels",
+    "plus_russia_shocks",
+    "plus_recipient_levels",
+    "plus_recipient_shocks",
+    "plus_all_levels",
+    "plus_all_shocks",
+    "plus_macro_topics",
+    "plus_cross_country",
+    "plus_all_news",
+    "plus_liquidity_all_news"
+  ],
+  "primary_confirmatory_comparison": "plus_all_news versus market_only",
+  "secondary_product_candidate": "plus_liquidity_all_news versus market_only",
+  "horizons": [3, 5, 10],
+  "evaluation_tolerance_bps": 25,
+  "training_start": "2018-01-01",
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "rolling_training_years": 4,
+  "minimum_training_observations": 500,
+  "model": "catboost",
+  "model_iterations": 80,
+  "ensemble_seeds": [20260905, 20260919, 20260937],
+  "training_label": "triple_barrier",
+  "triple_barrier": {"better_price_barrier_bps": 25, "worse_price_barrier_bps": 50},
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "nested_selection": {
+    "first_selection_year": 2023,
+    "minimum_past_signals": 20,
+    "metric": "lift_vs_matched_random",
+    "fallback_feature_set": "market_only"
+  },
+  "pseudo_holdout_years": [2025, 2026],
+  "promotion_rule": {
+    "primary_feature_set": "plus_all_news",
+    "minimum_positive_same_week_slices_out_of_15": 6,
+    "minimum_positive_aggregate_horizons_out_of_3": 2,
+    "minimum_signals_per_week": 0.8,
+    "require_nonnegative_pseudo_holdout_delta": true
+  },
+  "required_checks": [
+    "all variants use identical OOT dates",
+    "four-year rolling training window",
+    "three-seed mean score",
+    "purge equal to target horizon",
+    "news delayed by one full day",
+    "continuous causal signal threshold across test years",
+    "raw and same-week lift",
+    "per-year and per-corridor stability",
+    "nested variant selection using only earlier OOT years",
+    "fixed pseudo-holdout report for 2025-2026",
+    "partial three-corridor status is disclosed"
+  ]
+}
