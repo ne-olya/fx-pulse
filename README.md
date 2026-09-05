@@ -33,7 +33,6 @@
 
 | Файл | Что внутри |
 |---|---|
-| [docs/O_best-model.md](docs/O_best-model.md) | Замороженный кандидат: AMD, горизонт 5 дней, метрики по годам |
 | [docs/plan.md](docs/plan.md) | План решения: рамка кейса, принятые решения по сигнальной модели, этапы |
 | [docs/prototype-brief.md](docs/prototype-brief.md) | Рабочее задание на первый прототип конвейера: контракты модулей, метрики, порядок работ |
 | [docs/alternatives.md](docs/alternatives.md) | Дополнения и альтернативы: трендовые сценарии, волатильность, заявка по целевому курсу, rule-play, Rust — с вердиктами и быстрыми проверками |
@@ -57,9 +56,6 @@
 | [docs/O_uzs-final-experiment-plan.md](docs/O_uzs-final-experiment-plan.md) | Заранее зафиксированный план финальной проверки UZS |
 | [docs/O_uzs-final-results.md](docs/O_uzs-final-results.md) | Итог UZS: выбранная модель, новости, защита от переобучения и клиентский путь |
 | [docs/O_best-model.md](docs/O_best-model.md) | Короткая карточка замороженной модели RUB→UZS |
-| [docs/persona-and-communication.md](docs/persona-and-communication.md) | Портрет отправителя, включая отдельную персону для Узбекистана |
-| [docs/push-texts.md](docs/push-texts.md) | Проверенные тексты пушей и запрещённые формулировки |
-| [docs/prototype/README.md](docs/prototype/README.md) | Кликабельный прототип клиентского пути и сценарий устаревшего сигнала |
 
 ## Данные
 
