@@ -58,6 +58,10 @@
 | [docs/O_uzs-final-experiment-plan.md](docs/O_uzs-final-experiment-plan.md) | Заранее зафиксированный план финальной проверки UZS |
 | [docs/O_uzs-final-results.md](docs/O_uzs-final-results.md) | Итог UZS: выбранная модель, новости, защита от переобучения и клиентский путь |
 | [docs/O_best-model.md](docs/O_best-model.md) | Короткая карточка замороженной модели RUB→UZS |
+| [docs/O_final-corridor-matrix.md](docs/O_final-corridor-matrix.md) | Итоговая матрица качества моделей и денежного эффекта по пяти валютным коридорам |
+| [docs/O_currency-selection-deep-analysis.md](docs/O_currency-selection-deep-analysis.md) | Углублённый анализ выбора валюты по моделям, рынку, клиентской ценности и ограничениям |
+| [docs/tjs-model.md](docs/tjs-model.md) | Постановка, обучение, признаки, метрики и аудит исследовательской RUB→TJS-модели |
+| [docs/uzs-improvement-hypotheses.md](docs/uzs-improvement-hypotheses.md) | Проверенные гипотезы улучшения UZS-кандидата и результаты pseudo-holdout |
 
 ## Данные
 
