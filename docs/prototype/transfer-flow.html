@@ -59,6 +59,13 @@ h1{font-family:Manrope;font-size:25px;font-weight:800;letter-spacing:-.02em;marg
 .fxv{font-size:26px;font-weight:700;letter-spacing:-.5px;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
 .fxv .was{color:#8E8E93;text-decoration:line-through;font-size:16px;font-weight:400}
 .fxr{color:#8E8E93;font-size:13px;margin-top:6px}
+.lv{background:#1C1C1E;border-radius:16px;padding:14px 15px;margin-bottom:12px}
+.lvt{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.lvb{position:relative;height:6px;border-radius:3px;background:linear-gradient(90deg,#C3F53C 0%,#38383A 50%,#FF9F0A 100%)}
+.lvb i{position:absolute;top:-4px;width:10px;height:14px;border-radius:3px;border:2px solid #1C1C1E}
+.lvs{display:flex;justify-content:space-between;color:#8E8E93;font-size:11px;margin-top:7px}
+.lvc{color:#8E8E93;font-size:12px;margin-top:9px}
+
 .fxf{margin-top:11px;padding-top:11px;border-top:.5px solid #38383A;font-size:13.5px;line-height:1.35;color:#E5E5EA;display:flex;gap:8px;align-items:flex-start}
 .dt{width:7px;height:7px;border-radius:50%;background:#C3F53C;flex:none;margin-top:5px}
 .dt.o{background:#FF9F0A}
@@ -132,9 +139,11 @@ h1{font-family:Manrope;font-size:25px;font-weight:800;letter-spacing:-.02em;marg
     <div class="steps" id="steps"></div>
     <div class="note" id="note"></div>
     <div class="note">
-      <h3>Почему 10 000 ₽</h3>
-      <p>Круглое число: клиент проверяет расчёт в уме, не доставая калькулятор. Оценки среднего перевода расходятся от 5,6 до 13 тыс. ₽, точки нет — <b>круглая сумма честнее ложной точности</b>.</p>
-      <p>Быстрые суммы в самом приложении — 500, 1 000 и 2 000 ₽. Реальный перевод скорее меньше медианы, чем больше.</p>
+      <h3>Почему 35 000 ₽</h3>
+      <p>Не выдумана: <b>ЦБ РФ, средний перевод в Армению — 316 $</b>, то есть 23 280 ₽ по среднему курсу 2021 года (последний год со страновой разбивкой). С накопленной инфляцией Росстата за 2022–2026 (+44,6 %) — 33 700 ₽, округлено вверх до 35 000 ₽.</p>
+      <p>Проверка: то же вычисление по всем пяти коридорам, взвешенное по числу операций, даёт 24 500 ₽ против <b>22 000 ₽ у ВТБ за 2025 год</b> по всем направлениям. Расхождение 11 % — пересчёт сходится.</p>
+      <p>Округляем вверх намеренно: клиент проверяет расчёт в уме, а сумма в валюте получателя должна ощущаться. 35 000 ₽ — это <b>60 % месячной зарплаты в Армении</b>.</p>
+      <p>У клиента с историей переводов подставляется его собственная сумма. 35 000 ₽ — значение по умолчанию для коридора без истории.</p>
       <p>Курс исполнения из приложения: 100 AMD = 25,94 ₽. Не курс ЦБ — по нему клиент реально переводит.</p>
     </div>
   </div>
@@ -142,13 +151,13 @@ h1{font-family:Manrope;font-size:25px;font-weight:800;letter-spacing:-.02em;marg
 </div>
 
 <script>
-var late=false, scr='nc', meth='phone', amount=10000, kb=false, target=0, rcpt=0, rl=false;
+var late=false, scr='nc', meth='phone', amount=35000, kb=false, target=0, rcpt=0, rl=false;
 var $=function(i){return document.getElementById(i)};
 var F=function(n){return n.toLocaleString('ru-RU')};
-var RUB=10000, R_OK=0.2594, R_LATE=0.2620;
+var RUB=35000, R_OK=0.2594, R_LATE=0.2620;
 function amd(r,rub){return Math.round((rub||RUB)/r)}
 function rate(){return late?R_LATE:R_OK}
-var GOT_OK=Math.round(10000/R_OK), MONTH=1200;
+var GOT_OK=Math.round(35000/R_OK), MONTH=4200;
 
 var ic={
  home:'<svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" fill="currentColor"/></svg>',
@@ -209,12 +218,24 @@ function acct(){
   }
   return h+'</div>';
 }
+function levelBar(){
+  // Факт о настоящем относительно собственной истории коридора.
+  // Три состояния, без совета и без вывода о будущем. Только внутри приложения.
+  var st=late?1:0;
+  var L=[{t:'Доходит больше обычного',c:'#C3F53C',p:18},
+         {t:'Как обычно',c:'#8E8E93',p:50},
+         {t:'Доходит меньше обычного',c:'#FF9F0A',p:82}][st];
+  return '<div class="lv"><div class="lvt"><span class="dt" style="background:'+L.c+'"></span>'+L.t+'</div>'+
+   '<div class="lvb"><i style="left:calc('+L.p+'% - 5px);background:'+L.c+'"></i></div>'+
+   '<div class="lvs"><span>больше</span><span>меньше</span></div>'+
+   '<div class="lvc">Сравнение с курсом за последние 90 дней</div></div>';
+}
 function fxBlock(){
   var a=got(null,R_OK), b=got(null,R_LATE), d=a-b;
   if(!late) return '<div class="fx"><div class="fxl">Получатель получит</div>'+
    '<div class="fxv">'+F(a)+' ֏</div>'+
    '<div class="fxr">100 AMD = 25,94 ₽</div>'+
-   '<div class="fxf"><span class="dt"></span><span>На '+F(Math.round(MONTH*amount/10000))+' драмов больше, чем месяц назад</span></div></div>';
+   '<div class="fxf"><span class="dt"></span><span>На '+F(Math.round(MONTH*amount/35000))+' драмов больше, чем месяц назад</span></div></div>';
   return '<div class="fx w"><div class="fxl">Получатель получит</div>'+
    '<div class="fxv">'+F(b)+' ֏<span class="was">'+F(a)+' ֏</span></div>'+
    '<div class="fxr">100 AMD = 26,20 ₽</div>'+
@@ -234,7 +255,7 @@ S.nc=function(){
   '<div class="nch"><h3>Центр уведомлений</h3><div class="ncx">'+ic.x+'</div></div><div class="nl">'+
   '<div class="nt" onclick="go(\'methods\')"><div class="ni">A</div><div class="nb">'+
   '<div class="ntop"><b>Альфа-Банк</b><span>сейчас</span></div>'+
-  '<div class="ntt">За 10 000 ₽ дойдёт '+F(GOT_OK)+' драмов</div>'+
+  '<div class="ntt">За 35 000 ₽ дойдёт '+F(GOT_OK)+' драм</div>'+
   '<div class="ntx">На '+F(MONTH)+' больше, чем месяц назад</div>'+
   '</div></div><div class="tap">Нажмите на уведомление</div></div><div class="hbar"></div></div>';
 };
@@ -261,6 +282,7 @@ S.transfer=function(){
   } else { h+=acct(); }
   h+='<div class="hint">Подставлено из последнего перевода</div>';
   h+=fxBlock();
+  h+=levelBar();
   h+='<div class="amt" onclick="kb=!kb;render()"><div class="v">'+F(amount)+'<span class="cur"> ₽</span></div>'+
      '<div class="go">'+ic.arr+'</div></div>'+
      '<div class="g" style="font-size:13px;margin:0 2px 14px">'+M.fee+(M.f?' · '+F(Math.round(amount*M.f))+' ₽':'')+'</div>';
@@ -349,6 +371,6 @@ function render(){
 }
 $('bOk').onclick=function(){late=false;render()};
 $('bLate').onclick=function(){late=true;if(scr==='nc'){scr='transfer'}render()};
-$('bReset').onclick=function(){late=false;scr='nc';meth='phone';amount=10000;kb=false;target=0;rcpt=0;rl=false;render()};
+$('bReset').onclick=function(){late=false;scr='nc';meth='phone';amount=35000;kb=false;target=0;rcpt=0;rl=false;render()};
 render();
 </script>

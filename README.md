@@ -6,8 +6,34 @@
 
 ## Документы
 
+### Продукт
+
 | Файл | Что внутри |
 |---|---|
+| [docs/audit-2026-09-05.md](docs/audit-2026-09-05.md) | Аудит материалов против постановки, ответов кейсодателя и критериев организаторов; список задач со статусами |
+| [docs/corridor-criteria.md](docs/corridor-criteria.md) | Критерии выбора коридора, зафиксированные до получения матрицы моделей |
+| [docs/value-and-abtest.md](docs/value-and-abtest.md) | Ценность в числах: ощутимость выгоды, доход банка, дизайн A/B-теста и план пилота |
+| [docs/scenarios-to-texts.md](docs/scenarios-to-texts.md) | Сценарий → формулировка пуша: что реально срабатывает и один шаблон текста |
+| [docs/send-timing.md](docs/send-timing.md) | Когда отправляем пуш: готовность сигнала, три варианта, часовые пояса |
+| [docs/push-texts.md](docs/push-texts.md) | Библиотека текстов, запрещённые формулировки, результаты прогона на персонах |
+| [docs/persona-and-communication.md](docs/persona-and-communication.md) | Портрет отправителя и ролевая модель для симуляции |
+| [docs/market-and-persona.md](docs/market-and-persona.md) | Объёмы по коридорам и портрет отправителя с подтверждением каждого вывода |
+| [docs/reference-user-portrait.md](docs/reference-user-portrait.md) | Средний чек и число операций по коридорам из данных ЦБ РФ |
+| [docs/bigtech-migrant-ux.md](docs/bigtech-migrant-ux.md) | Как большие компании упрощают приложения и пуши для мигрантов |
+| [docs/prototype/](docs/prototype/) | Кликабельный прототип клиентского пути на интерфейсе Альфа-мобайла |
+| [docs/presentation/](docs/presentation/) | Презентации проекта и генератор |
+| [docs/presentation-plan.md](docs/presentation-plan.md) | План работ под нарратив защиты, по слайдам |
+| [docs/product-backlog.md](docs/product-backlog.md) | Продуктовый бэклог: последовательность задач |
+| [docs/benchmark.md](docs/benchmark.md) | Как задачу «сейчас удачный момент» решают в финтехе, travel, e-commerce и энергетике |
+| [docs/qa-kejsodatel.md](docs/qa-kejsodatel.md) | Вопросы кейсодателю и ответы, три раунда |
+| [docs/project-description.md](docs/project-description.md) | Полное описание проекта |
+| [docs/product-materials.md](docs/product-materials.md) | Продуктовая постановка и выводы для пользовательского сценария |
+
+### Исследование
+
+| Файл | Что внутри |
+|---|---|
+| [docs/O_best-model.md](docs/O_best-model.md) | Замороженный кандидат: AMD, горизонт 5 дней, метрики по годам |
 | [docs/plan.md](docs/plan.md) | План решения: рамка кейса, принятые решения по сигнальной модели, этапы |
 | [docs/prototype-brief.md](docs/prototype-brief.md) | Рабочее задание на первый прототип конвейера: контракты модулей, метрики, порядок работ |
 | [docs/alternatives.md](docs/alternatives.md) | Дополнения и альтернативы: трендовые сценарии, волатильность, заявка по целевому курсу, rule-play, Rust — с вердиктами и быстрыми проверками |
@@ -18,8 +44,6 @@
 | [docs/rule-selection.md](docs/rule-selection.md) | Nested walk-forward поиск rule-based и интерпретируемых ML-сигналов по межрыночному universe |
 | [docs/local-minimum-models.md](docs/local-minimum-models.md) | Проверка рекомендаций о будущем минимуме CNY/RUB на горизонтах 1/5/20 дней |
 | [docs/benchmark.md](docs/benchmark.md) | Как задачу «сейчас удачный момент» решают в финтехе, travel, e-commerce и энергетике |
-| [docs/qa-kejsodatel.md](docs/qa-kejsodatel.md) | Вопросы кейсодателю и ответы |
-| [docs/project-description.md](docs/project-description.md) | Полное описание проекта; дополнено результатами расширенного эксперимента |
 | [docs/product-materials.md](docs/product-materials.md) | Продуктовая постановка и выводы для пользовательского сценария |
 | [docs/O_additional-materials-interim.md](docs/O_additional-materials-interim.md) | Самодостаточные дополнительные материалы для промежуточной сдачи |
 | [docs/O_labeling.md](docs/O_labeling.md) | Схема разметки, целевые переменные и выбор дневной/часовой гранулярности |
