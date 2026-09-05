@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "registered_before_results",
+  "registered_at": "2026-09-04",
+  "purpose": "exploratory ablation of seven causal market feature groups and an expanded cross-corridor consensus for AMD h=5",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "horizon": 5,
+  "test_years": [2022, 2023, 2024, 2025, 2026],
+  "rolling_training_years": 4,
+  "minimum_training_observations": 100,
+  "model": "catboost",
+  "model_iterations": 80,
+  "random_seed": 20260904,
+  "base_feature_prefixes": ["base__", "leg__", "regime__", "market__", "indicator__"],
+  "feature_sets": {
+    "baseline": [],
+    "plus_liquidity": ["liquidity"],
+    "plus_cross_currency": ["cross_currency"],
+    "plus_rates": ["rates"],
+    "plus_commodities": ["commodities"],
+    "plus_equities": ["equities"],
+    "plus_regimes": ["regimes"],
+    "plus_events": ["events"],
+    "all_enriched": ["liquidity", "cross_currency", "rates", "commodities", "equities", "regimes", "events"]
+  },
+  "consensus_variants": ["official_mean", "agreement_weighted", "agreement_gate"],
+  "consensus_rank_lookback": 60,
+  "consensus_rank_minimum_history": 20,
+  "agreement_gate": {"minimum_other_positive_share": 0.75, "maximum_other_rank_std": 0.30},
+  "adaptive_policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  }
+}

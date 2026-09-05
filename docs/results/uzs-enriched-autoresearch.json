@@ -1,0 +1,34 @@
+{
+  "status": "stopped_at_iteration_limit",
+  "iterations": 10,
+  "target_same_week_lift": 1.3,
+  "retained_params": {
+    "iterations": 100,
+    "depth": 5,
+    "learning_rate": 0.04,
+    "auto_class_weights": null
+  },
+  "search_2022_2024": {
+    "same_week_lift": 1.226643218289734,
+    "raw_lift": 1.4248790425261013,
+    "hit_rate": 0.6038961038961039,
+    "all_days_hit_rate": 0.42382271468144045,
+    "signals": 154,
+    "hits": 93,
+    "signals_per_week": 1.0425531914893615,
+    "worst_year_same_week_lift": 1.1808118081180812,
+    "yearly_same_week_lift": [1.3414634146341464, 1.2068076328004125, 1.1808118081180812]
+  },
+  "pseudo_holdout_2025_2026": {
+    "same_week_lift": 1.2905748924520923,
+    "raw_lift": 1.5492957746478875,
+    "hit_rate": 0.5445544554455446,
+    "all_days_hit_rate": 0.35148514851485146,
+    "signals": 101,
+    "hits": 55,
+    "signals_per_week": 1.2189655172413794,
+    "worst_year_same_week_lift": 1.2527964205816553,
+    "yearly_same_week_lift": [1.3322368421052633, 1.2527964205816553]
+  },
+  "conclusion": "No trial beat the frozen baseline. The expanded Uzbekistan features improved search same-week lift slightly versus v1, but did not materially improve the already inspected pseudo-holdout."
+}

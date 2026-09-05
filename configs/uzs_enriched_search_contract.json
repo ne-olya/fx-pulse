@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_autoresearch",
+  "features_path": "artifacts/uzs_feature_enrichment_v2_repro2_20260905/features.csv.gz",
+  "features_sha256": "e93d704b29eebc1a105d93639bd8af0b06ada12fbfe1f6fa3d9f97f544ab3d27",
+  "corridors": ["AMD", "KGS", "KZT", "TJS", "UZS"],
+  "target_corridor": "UZS",
+  "search_years": [2022, 2023, 2024],
+  "pseudo_holdout_years": [2025, 2026],
+  "horizon": 5,
+  "training_target": "triple_barrier",
+  "rolling_training_years": 4,
+  "minimum_training_observations": 100,
+  "evaluation_tolerance_bps": 25,
+  "random_seed": 20260904,
+  "base_feature_prefixes": ["base__", "leg__", "regime__", "market__", "indicator__"],
+  "extra_feature_prefixes": [
+    "extra__liquidity__",
+    "extra__cross__",
+    "extra__rates__",
+    "extra__commodity__",
+    "extra__equity__",
+    "extra__regime__",
+    "extra__event__",
+    "extra__uzs__"
+  ],
+  "consensus": {
+    "rank_lookback": 60,
+    "rank_minimum_history": 20,
+    "own_weight": 0.5,
+    "other_weight": 0.5,
+    "minimum_other_positive_share": 0.75,
+    "maximum_other_rank_std": 0.3
+  },
+  "policy": {
+    "top_score_share": 0.4,
+    "lookback_observations": 60,
+    "minimum_history_observations": 20,
+    "cooldown_days": 3,
+    "weekly_cap": 2
+  },
+  "constraints": {
+    "minimum_signals_per_week": 1.0,
+    "maximum_signals_per_week": 2.0,
+    "minimum_worst_year_same_week_lift": 1.1,
+    "minimum_pooled_raw_lift": 1.4
+  },
+  "target_search_same_week_lift": 1.3
+}

@@ -110,10 +110,56 @@ make recipient-bank-data
 
 Официальные ответы по каждой дате кэшируются в
 `data/raw/recipient_banks/cache/`, поэтому оборванная загрузка продолжается, а
-не начинается заново. Компактный результат с USD и RUB пишется в
+не начинается заново. Компактный результат пишется в
 `data/raw/recipient_bank_daily.csv`: Узбекистан покрыт с 2018 года, Казахстан —
 с 7 мая 2021 года. Дата запроса и дата активации курса хранятся отдельно;
 перенесённый курс помечается `is_carried=true`.
+
+Для Узбекистана загрузчик сохраняет USD, RUB и CNY; для Казахстана — USD и
+RUB. Отдельный UZS-снимок по датам ЦБ РФ можно получить так:
+
+```bash
+uv run python -m fxpulse.data.recipient_banks \
+  --cbr-dates data/raw/cbr_daily.csv \
+  --banks CBU_UZ \
+  --output data/raw/uzbekistan/cbu_daily_rates.csv \
+  --cache-dir data/raw/recipient_banks/cache
+```
+
+### Макроданные Узбекистана
+
+Загрузчик создаёт новый неизменяемый каталог с исходными файлами и manifest с
+URL, временем получения, размером и SHA-256:
+
+```bash
+uv run python scripts/fetch_uzbekistan_macro.py \
+  --output data/raw/uzbekistan/snapshot-YYYYMMDD
+```
+
+Он получает официальные таблицы ключевой ставки, резервов и платёжного баланса
+ЦБ Узбекистана, а также текущую таблицу CPI SIAT. Эндпоинты обновляются
+владельцами, поэтому для точного повторения эксперимента нужно сохранять каталог
+snapshot вместе с manifest. Текущая SIAT-таблица не гарантирует полную
+историческую глубину; старые CPI-файлы передаются нормализатору дополнительными
+аргументами `--cpi`.
+
+```bash
+uv run python scripts/build_uzbekistan_leg_data.py \
+  --cbu-rates data/raw/uzbekistan/cbu_daily_rates.csv \
+  --policy-rate data/raw/uzbekistan/snapshot-YYYYMMDD/cbu_policy_rate.csv \
+  --policy-supplement configs/uzs_policy_rate_supplement.csv \
+  --cpi data/raw/uzbekistan/uz_cpi_historical.csv \
+  --cpi data/raw/uzbekistan/snapshot-YYYYMMDD/uz_cpi_current.csv \
+  --reserves data/raw/uzbekistan/snapshot-YYYYMMDD/cbu_reserves.xlsx \
+  --bop data/raw/uzbekistan/snapshot-YYYYMMDD/cbu_bop.xlsx \
+  --output data/processed/uzbekistan_point_in_time
+```
+
+Времена публикации хранятся как `known_at`, а признаки присоединяются только
+назад во времени. `secondary income, credits` используется лишь как широкий
+proxy входящих текущих трансфертов; резервы и reserve-asset flow не называются
+интервенциями. Исторических банковских RUB→UZS bid/ask и комиссий в открытом
+воспроизводимом наборе нет, поэтому загрузчик не создаёт их синтетически.
 
 ### Общая исследовательская панель
 

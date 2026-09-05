@@ -24,10 +24,12 @@ def test_parse_uzbekistan_rates_and_activation_date() -> None:
         [
             {"Ccy": "USD", "Nominal": "1", "Rate": "12397.04", "Date": "09.01.2024"},
             {"Ccy": "RUB", "Nominal": "1", "Rate": "138.10", "Date": "09.01.2024"},
+            {"Ccy": "CNY", "Nominal": "1", "Rate": "1727.25", "Date": "09.01.2024"},
         ]
     ).encode()
 
     rows = parse_uzbekistan_json(payload, requested_date=dt.date(2024, 1, 10))
 
     assert rows[0]["local_per_nominal"] == 12397.04
+    assert [row["quote_ccy"] for row in rows] == ["USD", "RUB", "CNY"]
     assert all(row["is_carried"] for row in rows)

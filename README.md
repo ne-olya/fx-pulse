@@ -28,6 +28,8 @@
 | [docs/O_final-research-plan.md](docs/O_final-research-plan.md) | Единый итог всех проверок, готовые данные и приоритетные следующие гипотезы |
 | [docs/O_hypothesis-log.md](docs/O_hypothesis-log.md) | Короткий журнал заранее зафиксированных новых проверок |
 | [docs/O_robust-innovation-results.md](docs/O_robust-innovation-results.md) | Перепроверка прежних победителей, 21 зафиксированный вариант и честный итог |
+| [docs/amd-feature-enrichment.md](docs/amd-feature-enrichment.md) | Абляция 305 рыночных признаков вокруг основного AMD h=5 кандидата |
+| [docs/uzs-enriched-autoresearch.md](docs/uzs-enriched-autoresearch.md) | Воспроизводимый UZS h=5 эксперимент, 94 локальных признака и 10 итераций авторесерча |
 
 ## Данные
 

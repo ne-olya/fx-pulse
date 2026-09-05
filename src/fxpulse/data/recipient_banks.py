@@ -23,7 +23,10 @@ import pandas as pd
 
 USER_AGENT = "fx-pulse/0.1 (+https://github.com/ne-olya/fx-pulse)"
 TLS_CONTEXT = ssl.create_default_context(cafile=certifi.where())
-QUOTE_CURRENCIES = ("USD", "RUB")
+BANK_QUOTE_CURRENCIES = {
+    "NBK_KZ": ("USD", "RUB"),
+    "CBU_UZ": ("USD", "RUB", "CNY"),
+}
 RAW_COLUMNS = (
     "requested_date",
     "rate_date",
@@ -46,7 +49,7 @@ def parse_kazakhstan_xml(payload: bytes, *, requested_date: dt.date) -> list[dic
     rows: list[dict[str, object]] = []
     for item in root.findall("item"):
         ccy = item.findtext("title", "").strip().upper()
-        if ccy not in QUOTE_CURRENCIES:
+        if ccy not in BANK_QUOTE_CURRENCIES["NBK_KZ"]:
             continue
         nominal = int(item.findtext("quant", "0"))
         rate = float(item.findtext("description", "0").replace(",", "."))
@@ -64,7 +67,7 @@ def parse_kazakhstan_xml(payload: bytes, *, requested_date: dt.date) -> list[dic
                 "is_carried": rate_date != requested_date,
             }
         )
-    if {row["quote_ccy"] for row in rows} != set(QUOTE_CURRENCIES):
+    if {row["quote_ccy"] for row in rows} != set(BANK_QUOTE_CURRENCIES["NBK_KZ"]):
         raise ValueError(f"NBK response lacks USD or RUB on {requested_date}")
     return rows
 
@@ -73,7 +76,7 @@ def parse_uzbekistan_json(payload: bytes, *, requested_date: dt.date) -> list[di
     records = json.loads(payload.decode("utf-8"))
     by_ccy = {str(record.get("Ccy", "")).upper(): record for record in records}
     rows: list[dict[str, object]] = []
-    for ccy in QUOTE_CURRENCIES:
+    for ccy in BANK_QUOTE_CURRENCIES["CBU_UZ"]:
         if ccy not in by_ccy:
             raise ValueError(f"CBU UZ response lacks {ccy} on {requested_date}")
         record = by_ccy[ccy]

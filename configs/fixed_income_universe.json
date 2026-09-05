@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "description": "Official MOEX fixed-income indices used only as lagged market context.",
+  "as_of": "2026-09-04",
+  "minimum_history_years": 5,
+  "instruments": [
+    {
+      "id": "ofz_rgbi",
+      "status": "candidate",
+      "asset_class": "fixed_income_index",
+      "role": "government_bond_market",
+      "label": "MOEX Russia Government Bond Index",
+      "source": {"engine": "stock", "market": "index", "board": "SNDX", "secid": "RGBI"},
+      "price_unit": "index points",
+      "normalization": {"kind": "raw", "expected_facevalue": null},
+      "availability": {"daily_from": "2003-01-02", "intraday_10m_from": null},
+      "notes": "Price index; changes reflect the broad OFZ market, not a yield quote."
+    },
+    {
+      "id": "ofz_total_return_1y",
+      "status": "candidate",
+      "asset_class": "fixed_income_index",
+      "role": "government_bond_short_duration",
+      "label": "MOEX Government Bond Total Return 1Y",
+      "source": {"engine": "stock", "market": "index", "board": "RTSI", "secid": "RUGBITR1Y"},
+      "price_unit": "total-return index points",
+      "normalization": {"kind": "raw", "expected_facevalue": null},
+      "availability": {"daily_from": "2012-12-28", "intraday_10m_from": null},
+      "notes": "Short-duration OFZ total-return proxy."
+    },
+    {
+      "id": "ofz_total_return_3y",
+      "status": "candidate",
+      "asset_class": "fixed_income_index",
+      "role": "government_bond_medium_duration",
+      "label": "MOEX Government Bond Total Return 3Y",
+      "source": {"engine": "stock", "market": "index", "board": "RTSI", "secid": "RUGBITR3Y"},
+      "price_unit": "total-return index points",
+      "normalization": {"kind": "raw", "expected_facevalue": null},
+      "availability": {"daily_from": "2012-12-28", "intraday_10m_from": null},
+      "notes": "Medium-duration OFZ total-return proxy."
+    },
+    {
+      "id": "ofz_total_return_10y",
+      "status": "candidate",
+      "asset_class": "fixed_income_index",
+      "role": "government_bond_long_duration",
+      "label": "MOEX Government Bond Total Return 10Y",
+      "source": {"engine": "stock", "market": "index", "board": "RTSI", "secid": "RUGBITR10Y"},
+      "price_unit": "total-return index points",
+      "normalization": {"kind": "raw", "expected_facevalue": null},
+      "availability": {"daily_from": "2012-12-28", "intraday_10m_from": null},
+      "notes": "Long-duration OFZ total-return proxy; long-minus-short return is not labelled a yield-curve spread."
+    }
+  ]
+}
