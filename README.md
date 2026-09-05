@@ -22,7 +22,7 @@
 | [docs/market-and-persona.md](docs/market-and-persona.md) | Объёмы по коридорам и портрет отправителя с подтверждением каждого вывода |
 | [docs/reference-user-portrait.md](docs/reference-user-portrait.md) | Средний чек и число операций по коридорам из данных ЦБ РФ |
 | [docs/bigtech-migrant-ux.md](docs/bigtech-migrant-ux.md) | Как большие компании упрощают приложения и пуши для мигрантов |
-| [docs/prototype/](docs/prototype/) | Кликабельный прототип клиентского пути на интерфейсе Альфа-мобайла |
+| [docs/prototype/](docs/prototype/) | Схема клиентского пути с развилками и кликабельный прототип экранов на интерфейсе Альфа-мобайла |
 | [docs/presentation/](docs/presentation/) | Презентации проекта и генератор |
 | [docs/presentation-plan.md](docs/presentation-plan.md) | План работ под нарратив защиты, по слайдам |
 | [docs/product-backlog.md](docs/product-backlog.md) | Продуктовый бэклог: последовательность задач |
