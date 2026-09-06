@@ -10,6 +10,8 @@
 
 | Файл | Что внутри |
 |---|---|
+| [docs/deck-vs-expectations.md](docs/deck-vs-expectations.md) | Сверка презентации с фреймом кейсодателя и критериями организаторов |
+| [docs/speech-review.md](docs/speech-review.md) | Разбор тестового прогона защиты и костяк спича на пять минут |
 | [docs/audit-2026-09-05.md](docs/audit-2026-09-05.md) | Аудит материалов против постановки, ответов кейсодателя и критериев организаторов; список задач со статусами |
 | [docs/corridor-criteria.md](docs/corridor-criteria.md) | Критерии выбора коридора, зафиксированные до получения матрицы моделей |
 | [docs/value-and-abtest.md](docs/value-and-abtest.md) | Ценность в числах: ощутимость выгоды, доход банка, дизайн A/B-теста и план пилота |
@@ -57,6 +59,9 @@
 | [docs/uzs-enriched-autoresearch.md](docs/uzs-enriched-autoresearch.md) | Воспроизводимый UZS h=5 эксперимент, 94 локальных признака и 10 итераций авторесерча |
 | [docs/O_uzs-final-experiment-plan.md](docs/O_uzs-final-experiment-plan.md) | Заранее зафиксированный план финальной проверки UZS |
 | [docs/O_uzs-final-results.md](docs/O_uzs-final-results.md) | Итог UZS: выбранная модель, новости, защита от переобучения и клиентский путь |
+| [docs/signal-policy.md](docs/signal-policy.md) | Как пять моделей сводятся в один пуш: consensus, порог, cooldown, недельный лимит |
+| [docs/fast-slow-and-pilot-dispersion.md](docs/fast-slow-and-pilot-dispersion.md) | Быстрый индикатор против медленного и эмпирический разброс выгоды для пилота |
+| [docs/status-2026-09-06.md](docs/status-2026-09-06.md) | Статус исследования на 06.09 |
 | [docs/O_best-model.md](docs/O_best-model.md) | Короткая карточка замороженной модели RUB→UZS |
 | [docs/O_final-corridor-matrix.md](docs/O_final-corridor-matrix.md) | Итоговая матрица качества моделей и денежного эффекта по пяти валютным коридорам |
 | [docs/O_currency-selection-deep-analysis.md](docs/O_currency-selection-deep-analysis.md) | Углублённый анализ выбора валюты по моделям, рынку, клиентской ценности и ограничениям |
@@ -90,6 +95,8 @@ make data       # ЦБ, дневной MOEX и 10-минутные свечи MO
 make data-quality
 make test       # включая 50 срезов против заглядывания вперёд
 make backtest   # signals.csv, metrics.csv и run_meta.json
+
+uv run python -m fxpulse.signal_cli --date 2026-06-10   # сигналы на произвольную дату среза
 ```
 
 `make data` загружает данные в игнорируемую Git папку `data/raw/`. По умолчанию
