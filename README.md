@@ -10,6 +10,7 @@
 
 | Файл | Что внутри |
 |---|---|
+| [docs/tz-ml-open-items.md](docs/tz-ml-open-items.md) | ТЗ для ML: расчёт модели на дату среза, матрица «индикатор × коридор», выгрузка дат для графика |
 | [docs/open-deliverables-spec.md](docs/open-deliverables-spec.md) | Как закрыть пункты 1 и 2 постановки: расчёт модели на дату среза и матрица «индикатор × коридор» |
 | [docs/deck-vs-expectations.md](docs/deck-vs-expectations.md) | Сверка презентации с фреймом кейсодателя и критериями организаторов |
 | [docs/speech-review.md](docs/speech-review.md) | Разбор тестового прогона защиты и костяк спича на пять минут |
