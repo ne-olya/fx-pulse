@@ -10,6 +10,7 @@
 
 | Файл | Что внутри |
 |---|---|
+| [docs/final/](docs/final/) | **Финальный комплект для сдачи:** описание проекта, три продуктовых документа, презентация и дополнительные материалы |
 | [docs/tz-ml-open-items.md](docs/tz-ml-open-items.md) | ТЗ для ML: расчёт модели на дату среза, матрица «индикатор × коридор», выгрузка дат для графика |
 | [docs/ml-open-items-status-2026-09-06.md](docs/ml-open-items-status-2026-09-06.md) | Статус исполнения ML-ТЗ, закрытые пункты, исправления и один внешний blocker |
 | [docs/indicator-corridor-matrix.md](docs/indicator-corridor-matrix.md) | Матрица rule-based индикаторов и model consensus на пяти валютных коридорах |
