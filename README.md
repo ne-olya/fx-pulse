@@ -11,6 +11,9 @@
 | Файл | Что внутри |
 |---|---|
 | [docs/tz-ml-open-items.md](docs/tz-ml-open-items.md) | ТЗ для ML: расчёт модели на дату среза, матрица «индикатор × коридор», выгрузка дат для графика |
+| [docs/ml-open-items-status-2026-09-06.md](docs/ml-open-items-status-2026-09-06.md) | Статус исполнения ML-ТЗ, закрытые пункты, исправления и один внешний blocker |
+| [docs/indicator-corridor-matrix.md](docs/indicator-corridor-matrix.md) | Матрица rule-based индикаторов и model consensus на пяти валютных коридорах |
+| [docs/model-signal-as-of.md](docs/model-signal-as-of.md) | Как честно воспроизвести замороженный UZS-сигнал на произвольную историческую дату |
 | [docs/open-deliverables-spec.md](docs/open-deliverables-spec.md) | Как закрыть пункты 1 и 2 постановки: расчёт модели на дату среза и матрица «индикатор × коридор» |
 | [docs/deck-vs-expectations.md](docs/deck-vs-expectations.md) | Сверка презентации с фреймом кейсодателя и критериями организаторов |
 | [docs/speech-review.md](docs/speech-review.md) | Разбор тестового прогона защиты и костяк спича на пять минут |
@@ -100,7 +103,23 @@ make test       # включая 50 срезов против заглядыва
 make backtest   # signals.csv, metrics.csv и run_meta.json
 
 uv run python -m fxpulse.signal_cli --date 2026-06-10   # сигналы на произвольную дату среза
+uv run python -m fxpulse.indicator_matrix                # индикатор × 5 коридоров, h=5
 ```
+
+Замороженный UZS-кандидат является системой годовых past-only моделей, поэтому
+исторически воспроизводится через hash-verified OOT replay, а не через один
+CatBoost, обученный на всей истории. После восстановления игнорируемого
+финального артефакта:
+
+```bash
+uv run python -m fxpulse.frozen_uzs_replay
+uv run python -m fxpulse.signal_cli \
+  --grid configs/frozen_uzs_indicator.json \
+  --date 2026-06-10
+```
+
+Текущий статус артефакта и причина, по которой opt-in запись пока не перенесена
+в основной grid, описаны в [docs/model-signal-as-of.md](docs/model-signal-as-of.md).
 
 `make data` загружает данные в игнорируемую Git папку `data/raw/`. По умолчанию
 дневная история запрашивается с 2018-01-01, а 10-минутная — только с

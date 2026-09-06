@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "description": "Opt-in frozen UZS OOT replay. Enable only after exporting the hash-verified model artifact.",
+  "indicators": [
+    {
+      "name": "uzs_frozen_consensus",
+      "params": {
+        "model_path": ["models/uzs_frozen_oot_replay.csv.gz"],
+        "manifest_path": ["models/uzs_frozen_oot_replay.manifest.json"]
+      },
+      "direction": "favorable",
+      "speed": "slow",
+      "days_to_confirm": null,
+      "scenario": "T1"
+    }
+  ]
+}

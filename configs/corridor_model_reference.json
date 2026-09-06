@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "status": "frozen_published_research_results",
+  "evaluation": {
+    "horizon_trading_days": 5,
+    "tolerance_bps": 25,
+    "period_from": "2022-01-01",
+    "period_to": "2026-09-02"
+  },
+  "source": "docs/O_final-corridor-matrix.md",
+  "rows": {
+    "UZS": {
+      "signals": 140,
+      "hit_rate": 0.621,
+      "raw_lift": 1.56,
+      "same_week_lift": 1.25,
+      "signals_per_week": 0.61,
+      "candidate": "CatBoost strong tier with cross-corridor consensus"
+    },
+    "TJS": {
+      "signals": 263,
+      "hit_rate": 0.608,
+      "raw_lift": 1.442,
+      "same_week_lift": 1.238,
+      "signals_per_week": 1.14,
+      "candidate": "CatBoost with cross-corridor consensus"
+    },
+    "KGS": {
+      "signals": 257,
+      "hit_rate": 0.549,
+      "raw_lift": 1.382,
+      "same_week_lift": 1.204,
+      "signals_per_week": 1.11,
+      "candidate": "comparable baseline policy"
+    },
+    "AMD": {
+      "signals": 255,
+      "hit_rate": 0.573,
+      "raw_lift": 1.436,
+      "same_week_lift": 1.238,
+      "signals_per_week": 1.11,
+      "candidate": "CatBoost with leave-one-corridor consensus"
+    },
+    "KZT": {
+      "signals": 255,
+      "hit_rate": 0.463,
+      "raw_lift": 1.299,
+      "same_week_lift": 1.126,
+      "signals_per_week": 1.11,
+      "candidate": "comparable baseline policy"
+    }
+  },
+  "warning": "These are frozen published research rows, not recomputed rule-grid outputs and not production claims."
+}

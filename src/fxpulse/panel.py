@@ -253,7 +253,11 @@ def load_panel(series: str, *, raw_dir: Path | str = Path("data/raw"), as_of: ob
         frame = frame.loc[frame["known_at"] <= cut_off].copy()
 
     if frame.empty:
-        return pd.DataFrame(columns=PANEL_COLUMNS)
-    result = frame.loc[:, list(PANEL_COLUMNS)].copy().reset_index(drop=True)
+        result = pd.DataFrame(columns=PANEL_COLUMNS)
+    else:
+        result = frame.loc[:, list(PANEL_COLUMNS)].copy().reset_index(drop=True)
     result.attrs["fxpulse_sorted_by_known_at"] = True
+    result.attrs["fxpulse_series_id"] = series
+    result.attrs["fxpulse_raw_dir"] = str(raw_path)
+    result.attrs["fxpulse_as_of"] = _as_msk(as_of) if as_of is not None else None
     return result

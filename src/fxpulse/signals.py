@@ -64,6 +64,11 @@ class Config:
     raw_dir: Path | str = Path("data/raw")
     corridors: Mapping[str, str] = field(default_factory=lambda: DEFAULT_CORRIDORS.copy())
     indicators: tuple[IndicatorSpec, ...] = ()
+    max_data_age_days: int | None = 7
+
+    def __post_init__(self) -> None:
+        if self.max_data_age_days is not None and self.max_data_age_days < 0:
+            raise ValueError("max_data_age_days must be non-negative or None")
 
 
 def _as_msk(value: object) -> pd.Timestamp:
@@ -92,6 +97,14 @@ def signals_as_of(T: object, config: Config) -> pd.DataFrame:
         panel = load_panel(source_series, raw_dir=config.raw_dir, as_of=as_of)
         if not panel.empty and not bool(panel["known_at"].le(as_of).all()):
             raise AssertionError("load_panel returned a future observation")
+        if (
+            not panel.empty
+            and config.max_data_age_days is not None
+            and as_of - panel["known_at"].max() > pd.Timedelta(config.max_data_age_days, unit="D")
+        ):
+            # A historical fixing must not be silently reused as if it were a
+            # fresh signal after the data feed has stopped.
+            continue
         for spec in config.indicators:
             output = evaluate(spec.name, panel, **dict(spec.params))
             if not output.fired:

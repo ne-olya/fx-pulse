@@ -45,6 +45,23 @@ def test_walk_forward_purges_labels_that_would_cross_into_oot_block() -> None:
     assert first.embargo_observations == 5
 
 
+def test_walk_forward_keeps_label_observable_tail_of_non_final_quarter() -> None:
+    dates = pd.date_range("2024-01-01", periods=500, freq="B")
+    panel = pd.DataFrame({"value_date": dates.date})
+
+    folds = walk_forward_folds(panel, horizon=5, min_train_observations=100)
+
+    assert len(folds) >= 2
+    first = folds[0]
+    first_quarter = pd.Period(first.name, freq="Q")
+    expected_last = max(
+        index
+        for index, value in enumerate(dates)
+        if value.to_period("Q") == first_quarter
+    )
+    assert first.test_positions[-1] == expected_last
+
+
 def test_backtest_writes_all_required_artifacts_from_central_signal_path(tmp_path) -> None:
     _write_cbr_history(tmp_path)
     grid_path = tmp_path / "grid.json"

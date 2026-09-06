@@ -238,4 +238,9 @@ def seasonality(
     )
 
 
+# Import after defining the registry API so the submodule can register itself
+# without a circular initialization hazard.
+from fxpulse.indicators import frozen_uzs as _frozen_uzs  # noqa: E402,F401
+
+
 __all__ = ["IndicatorOut", "evaluate", "get_indicator", "indicator"]

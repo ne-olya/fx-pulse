@@ -96,9 +96,14 @@ def walk_forward_folds(
         train_stop_exclusive = start - horizon
         if train_stop_exclusive < min_train_observations:
             continue
-        # Restrict the OOT positions so their h-step label is contained in the
-        # same OOT quarter rather than leaking into a following fold.
-        test_positions = tuple(range(start, end - horizon + 1))
+        # A label may use observations from the following calendar quarter:
+        # that is the outcome we are evaluating, not an input to the signal.
+        # Keep every position whose full h-step outcome is observable in the
+        # complete evaluation history.  Cutting ``h`` rows from every quarter
+        # would silently shorten every non-final OOT fold and bias frequencies.
+        last_label_observable = len(panel) - horizon - 1
+        test_stop_inclusive = min(end, last_label_observable)
+        test_positions = tuple(range(start, test_stop_inclusive + 1))
         if not test_positions:
             continue
         embargo = min(horizon, len(panel) - end - 1)

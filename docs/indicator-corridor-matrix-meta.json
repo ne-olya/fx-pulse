@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "created_on": "2026-09-06",
+  "date_from": "2022-01-01",
+  "date_to": "2026-09-02",
+  "horizon": 5,
+  "tolerance_bps": 25.0,
+  "grid_path": "configs/grid.json",
+  "grid_sha256": "f2ccc4a4aa36c383dc3f3e60f23f989662f542e4f4a7de29d60d92b36f4862ba",
+  "model_reference_path": "configs/corridor_model_reference.json",
+  "model_reference_sha256": "2d212def06bf49c0ca511526b85dfbbda7933925ad76dccbfdb8f1669242d3e3",
+  "raw_cbr_sha256": "a4a5d77dd8ca2037d06974ad645926825c85f999b597d1f4bc5f292f7c403110",
+  "family_rows": 30,
+  "configuration_rows": 185,
+  "method": "point-in-time family union; no result-driven configuration selection"
+}
