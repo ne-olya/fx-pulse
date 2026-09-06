@@ -26,6 +26,7 @@
 | [docs/prototype-rationale.md](docs/prototype-rationale.md) | Обоснование прототипа: текущий путь, шесть механик с критериями выбора, обзор практик со ссылками |
 | [docs/prefill-concept.md](docs/prefill-concept.md) | Предзаполнение экрана перевода: развилки, данные, рекомендуемый вариант, что нужно для внедрения |
 | [docs/scenarios-to-texts.md](docs/scenarios-to-texts.md) | Сценарий → формулировка пуша: что реально срабатывает и один шаблон текста |
+| [docs/signal-forward-check.md](docs/signal-forward-check.md) | Что происходит с курсом после сигнала: проверка на 140 срабатываниях |
 | [docs/send-timing.md](docs/send-timing.md) | Когда отправляем пуш: готовность сигнала, три варианта, часовые пояса |
 | [docs/push-texts.md](docs/push-texts.md) | Библиотека текстов, запрещённые формулировки, результаты прогона на персонах |
 | [docs/persona-and-communication.md](docs/persona-and-communication.md) | Портрет отправителя и ролевая модель для симуляции |
