@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "indicator": "uzs_frozen_consensus",
+  "artifact_kind": "historical_annual_fold_oot_replay",
+  "research_status": "frozen_exploratory_candidate_not_production_ready",
+  "candidate": {
+    "target_corridor": "UZS",
+    "horizon_trading_days": 5,
+    "evaluation_tolerance_bps": 25,
+    "feature_set": "uzs_national_plus_all_gdelt",
+    "model_variant": "catboost_tb_unweighted_3seed",
+    "policy": "dual_lane",
+    "primary_signal_tier": "strong_prediction",
+    "training_window_years": 4,
+    "training_label": "triple_barrier_25_50_bps",
+    "seeds": [
+      20260905,
+      20260919,
+      20260937
+    ]
+  },
+  "replay_rows": 1126,
+  "replay_from": "2022-02-08",
+  "replay_to": "2026-08-26",
+  "replay_sha256": "5217c6834b6b9bd33b3ad8df168a2b88dc6edb26aab9ba38ffa4591603c99cd1",
+  "strong_signal_rows": 140,
+  "graph_signal_rows": 30,
+  "graph_from": "2025-09-02",
+  "graph_to": "2026-09-02",
+  "verified_metrics": {
+    "signals": 140,
+    "raw_lift": 1.5618941326530613,
+    "same_week_lift": 1.250898634076204,
+    "signals_per_week": 0.6071871127633209
+  },
+  "source_artifacts": {
+    "policy_scores": {
+      "path": "artifacts/uzs_final_experiment_20260905/policy_scores.csv.gz",
+      "sha256": "93508ceef3ec9cbdcce02c1236ea1e81eeb1bdec1459bcf8867bcb5c7d7cfe69"
+    },
+    "signals": {
+      "path": "artifacts/uzs_final_experiment_20260905/signals.csv.gz",
+      "sha256": "ed6966c6fc85252737e5b34c4c4dedac94b220ebf89c82226220d5a5e6eed1f4"
+    },
+    "run_meta": {
+      "path": "artifacts/uzs_final_experiment_20260905/run_meta.json",
+      "sha256": "8427df05b44b8ee01b5ee0fef6cd861475b2e6b2570e5ad34a0deb73fbd95c67"
+    },
+    "experiment_config": {
+      "path": "configs/uzs_final_experiment.json",
+      "sha256": "bd67ffa404072f0bde65d60b7af5033afd4c110d0fb4570037a23ede52dc82dc"
+    },
+    "frozen_config": {
+      "path": "configs/uzs_final_frozen_candidate.json",
+      "sha256": "a1deb0b1f112dd916ac9917055a3d490c1ff97148743e072987740e29c2c2eda"
+    }
+  },
+  "availability_contract": "daily replay row becomes usable at 20:00 Europe/Moscow on its date",
+  "limitation": "This file replays past OOT decisions. Live dates require the full point-in-time feature and retraining service."
+}

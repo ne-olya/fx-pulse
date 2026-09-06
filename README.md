@@ -110,18 +110,17 @@ uv run python -m fxpulse.indicator_matrix                # индикатор ×
 
 Замороженный UZS-кандидат является системой годовых past-only моделей, поэтому
 исторически воспроизводится через hash-verified OOT replay, а не через один
-CatBoost, обученный на всей истории. После восстановления игнорируемого
-финального артефакта:
+CatBoost, обученный на всей истории. Проверенный replay включён в репозиторий:
 
 ```bash
-uv run python -m fxpulse.frozen_uzs_replay
 uv run python -m fxpulse.signal_cli \
   --grid configs/frozen_uzs_indicator.json \
-  --date 2026-06-10
+  --date 2026-06-16
 ```
 
-Текущий статус артефакта и причина, по которой opt-in запись пока не перенесена
-в основной grid, описаны в [docs/model-signal-as-of.md](docs/model-signal-as-of.md).
+У команды с исходным каталогом финального прогона replay пересобирается командой
+`uv run python -m fxpulse.frozen_uzs_replay`. Контрольные метрики и ограничение
+исторического replay описаны в [docs/model-signal-as-of.md](docs/model-signal-as-of.md).
 
 `make data` загружает данные в игнорируемую Git папку `data/raw/`. По умолчанию
 дневная история запрашивается с 2018-01-01, а 10-минутная — только с
