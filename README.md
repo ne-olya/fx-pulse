@@ -16,6 +16,7 @@
 | [docs/model-signal-as-of.md](docs/model-signal-as-of.md) | Как честно воспроизвести замороженный UZS-сигнал на произвольную историческую дату |
 | [docs/open-deliverables-spec.md](docs/open-deliverables-spec.md) | Как закрыть пункты 1 и 2 постановки: расчёт модели на дату среза и матрица «индикатор × коридор» |
 | [docs/deck-vs-expectations.md](docs/deck-vs-expectations.md) | Сверка презентации с фреймом кейсодателя и критериями организаторов |
+| [docs/jury-readiness.md](docs/jury-readiness.md) | Оценка материалов и речи по пяти критериям жюри Demo Day |
 | [docs/speech-review.md](docs/speech-review.md) | Разбор тестового прогона защиты и костяк спича на пять минут |
 | [docs/audit-2026-09-06.md](docs/audit-2026-09-06.md) | Аудит материалов на 06.09: обязательные результаты, фрейм кейсодателя, дефекты |
 | [docs/audit-2026-09-05.md](docs/audit-2026-09-05.md) | Аудит материалов против постановки, ответов кейсодателя и критериев организаторов; список задач со статусами |
